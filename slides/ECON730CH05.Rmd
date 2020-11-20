@@ -1,0 +1,406 @@
+---
+title: 'Dealing Catagorical Data'
+author: "Logan Kelly, Ph.D."
+date: 'Managerial Statistics - ECON 730'
+output:
+  ioslides_presentation:
+    highlight: tango
+    widescreen: true
+    theme: spacelab
+  pdf_document: default
+  beamer_presentation:
+    slide_level: 2
+    theme: metropolis
+    highlight: tango
+    latex_engine: xelatex
+  html_document:
+    css: LectureNotes.css
+    highlight: tango
+    number_sections: yes
+    theme: lumen
+  slidy_presentation:
+    highlight: tango
+    theme: spacelab
+fontsize: 12pt
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+short-author: Dr. Kelly
+short-date: ''
+short-institute: UWRF
+short-title: Statistics Lecture
+classoption: aspectratio=169
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "", out.width="90%",fig.asp=.56, fig.align = "center", message=FALSE)
+```
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+.zoomDiv {
+  opacity: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 50px #888888;
+  max-height:100%; 
+  overflow: scroll;
+}
+
+.zoomImg {
+  width: 100%;
+}
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('slides').prepend("<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>");
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src'));
+      $('.zoomDiv').css({opacity: '1', width: '90%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'});
+    });
+  });
+</script>
+
+## R Packages Used In This Lecture {-}
+
+```{r echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+suppressMessages(library(tidyverse))
+
+if (!require("Rmisc")) install.packages("Rmisc")
+suppressMessages(library(Rmisc))
+
+if (!require("psych")) install.packages("psych")
+suppressMessages(library(psych))
+
+if (!require("foreign")) install.packages("foreign")
+suppressMessages(library(foreign))
+
+if (!require("multcomp")) install.packages("multcomp")
+suppressMessages(library(multcomp))
+
+```
+ 
+ 
+# Dealing Catagorical Data 
+
+## Types of Variables
+
+- Continuous variables
+  - Can be any number, positive or negative
+  - **Examples:** age in years, weight
+
+- Categorical variables
+  - Information that can be sorted into categories
+  - Types of categorical variables – ordinal, nominal and dichotomous (binary)
+  
+## Categorical Variables
+
+- **Ordinal variable** — a categorical variable with some intrinsic order or numeric value
+  - Example: Agreement (strongly disagree, disagree, neutral, agree, strongly agree)
+
+- **Nominal variable** – a categorical variable without an intrinsic order
+  - Example: Favorite pet (dog, cat, fish, snake)
+
+- **Dichotomous** (or binary) variables – a categorical variable with only 2 levels of categories
+  - Example: An answer to a yes or no question
+
+## Indicator Variables
+
+- Categorical data is represented in regression analysis using a set of indicator, or dummy, variables.
+- An indicator, or dummy, variable is a variable that can take on only 2 possible values: 0 or 1
+\[D = \left\{ \begin{array}{l}
+1\quad {\rm{if}}\;{\rm{an\;observation\;is\; in\; a\; given\; catagory}}\\
+{\rm{0}}\quad {\rm{otherwise}}
+\end{array} \right.\]
+- We need one less dummy variable than categories to represent all possible cases.
+- The category "left out" is the reference category
+
+## Interpreting Dummy Variables (Part 1)
+
+- Regression with only a dummy variable. Let $D$ be a dummy variable.
+
+- $\hat y = {{\hat \beta }_0} + {{\hat \beta }_1}D$
+
+\[\hat y = \left\{ \begin{array}{l}
+{{\hat \beta }_0} + {{\hat \beta }_1}\quad D = 1\\
+{{\hat \beta }_0}\quad D = 0
+\end{array} \right.\]
+
+## Interpreting Dummy Variables (Part 2)
+
+- Regression with a dummy variable and a continuous variable. Let $D$ be a dummy variable and $X$ be a continuous variable.
+
+- $\hat y = {{\hat \beta }_0} + {{\hat \beta }_1}D + {{\hat \beta }_2}X$
+
+\[\hat y = \left\{ \begin{array}{l}
+\left( {{{\hat \beta }_0} + {{\hat \beta }_1}} \right) + {{\hat \beta }_2}X\quad D = 1\\
+{{\hat \beta }_0} + {{\hat \beta }_2}X\quad D = 0
+\end{array} \right.\]
+
+
+## Interpreting Dummy Variables (Part 3)
+
+- Regression with a dummy variable and a continuous variable and a slope dummy. Let $D$ be a dummy variable and $X$ be a continuous variable.
+
+- $\hat y = {{\hat \beta }_0} + {{\hat \beta }_1}D + {{\hat \beta }_2}X + {{\hat \beta }_3}DX$
+
+\[\hat y = \left\{ \begin{array}{l}
+\left( {{{\hat \beta }_0} + {{\hat \beta }_1}} \right) + \left( {{{\hat \beta }_2} + {{\hat \beta }_3}} \right)X\quad D = 1\\
+{{\hat \beta }_0} + {{\hat \beta }_2}X\quad D = 0
+\end{array} \right.\]
+
+# Detecting Catagorical Effects
+
+## Three Types of Catagorical Effects
+
+```{r echo=F,fig.asp=0.4}
+sd = 1
+x0 <- 1:50 * 0.5 + rnorm(50,mean=0,sd=sd)
+x1 <- sample(c(rep(0,times=25),rep(1,times=25)))
+
+y1 <- 1 + 2*x0 + 30*x1 + rnorm(50,mean=0,sd=sd)
+y2 <- 1 + 2*x0 + 3*x0*x1 + rnorm(50,mean=0,sd=sd)
+y3 <- 1 + 2*x0 + 30*x1 + 2*x0*x1 + rnorm(50,mean=0,sd=sd)
+
+dat <- data.frame(x0=x0, x1=as.factor(x1), y1=y1, y2=y2, y3=y3)
+
+rows <- sample(nrow(dat))
+dat <- dat[rows, ]
+
+p1.y1 <- dat %>% ggplot(aes(x=x0,y=y1)) +
+  geom_point()
+
+p1.y2 <- dat %>% ggplot(aes(x=x0,y=y2)) +
+  geom_point()  
+
+p1.y3 <- dat %>% ggplot(aes(x=x0,y=y3)) +
+  geom_point()
+
+multiplot(p1.y1, p1.y2, p1.y3,cols=3)
+
+```
+
+## Factorized Scatorplot
+
+```{r echo=F,fig.asp=0.4}
+p1.y1 <- dat %>% ggplot(aes(x=x0,y=y1,color=x1)) +
+  geom_point() + theme(legend.position = "none") 
+
+p1.y2 <- dat %>% ggplot(aes(x=x0,y=y2,color=x1)) +
+  geom_point() + theme(legend.position = "none") 
+
+p1.y3 <- dat %>% ggplot(aes(x=x0,y=y3,color=x1)) +
+  geom_point() + theme(legend.position = "none") 
+
+
+multiplot(p1.y1, p1.y2, p1.y3, cols=3)
+```
+
+## A more Realistic Example
+```{r echo=F,fig.asp=0.4}
+sd = 10
+
+y1 <- y1 + rnorm(50,mean=0,sd=sd)
+y2 <- y2 + rnorm(50,mean=0,sd=sd)
+y3 <- y3 + rnorm(50,mean=0,sd=sd)
+
+dat <- data.frame(x0=x0, x1=as.factor(x1), y1=y1, y2=y2, y3=y3)
+rows <- sample(nrow(dat))
+dat <- dat[rows, ]
+
+p2.y1 <- dat %>% ggplot(aes(x=x0,y=y1)) +
+  geom_point() + theme(legend.position = "none")
+
+p2.y2 <- dat %>% ggplot(aes(x=x0,y=y2)) +
+  geom_point() + theme(legend.position = "none")
+
+p2.y3 <- dat %>% ggplot(aes(x=x0,y=y3)) +
+  geom_point() + theme(legend.position = "none")
+
+multiplot(p2.y1,p2.y2,p2.y3,cols=3)
+
+```
+
+## Add Factor Seperation and Regression Lines
+```{r echo=F,fig.asp=0.4}
+p2.y1 <- dat %>% ggplot(aes(x=x0,y=y1,color=x1)) +
+  geom_point() + 
+  theme(legend.position = "none") + 
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE)
+
+p2.y2 <- dat %>% ggplot(aes(x=x0,y=y2,color=x1)) +
+  geom_point() + 
+  theme(legend.position = "none") + 
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE)
+
+p2.y3 <- dat %>% ggplot(aes(x=x0,y=y3,color=x1)) +
+  geom_point() + 
+  theme(legend.position = "none") + 
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE)
+
+multiplot(p2.y1,p2.y2,p2.y3,cols=3)
+```
+
+# Class Case: California Strawberries Case
+
+## Case Background: California Strawberries Case
+
+- Susan Lee is the CEO of California Strawberries
+- The company  has two truck loading systems.
+- One in Bakersfield. The other in Monterrey.
+- Question: Which system is the quickest?
+
+## Load and Examen the Data
+
+```{r LoadCase, echo=T}
+packing <- read.csv("data/california.csv")
+head(packing)
+table(packing$Plant_Name)
+```
+
+## Scatterplot of Time vs. Number of Boxes
+
+```{r echo=T, out.width="40%",fig.asp=.56}
+packing %>% ggplot(aes(x=Boxes,y=Time)) +
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE) +
+  ggtitle("Time vs. Number of Boxes")
+```
+
+## Residules from Simple Linear Model
+
+```{r echo=T}
+packing.lm01 <- lm(Time ~ Boxes, data = packing)
+
+packing.lm01.res <- resid(packing.lm01)
+
+```
+
+## Residual plot from Simple Linear Model
+```{r echo=T, out.width="40%",fig.asp=.56}
+packing %>% ggplot(aes(x=Boxes,y=packing.lm01.res)) +
+  geom_point() +
+  ggtitle("Residule vs. Number of Boxes")
+```
+
+
+## Color the Residules by Plant
+```{r echo = T, out.width="40%",fig.asp=.56}
+packing %>% ggplot(aes(x=Boxes,y=packing.lm01.res, shape=Plant_Name, color=Plant_Name)) +
+  geom_point() +
+  ggtitle("Residule vs. Number of Boxes")
+```
+
+
+## Factorized Scatterplot of Time vs. Number of Boxes 
+
+```{r echo=T, out.width="40%",fig.asp=.56}
+
+packing %>% ggplot(aes(x=Boxes,y=Time, shape=Plant_Name, color=Plant_Name)) +
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE) +
+  ggtitle("Time vs. Number of Boxes")
+```
+
+# Develop a Model Catagorical Data
+
+## Prepairing the Data
+
+```{r echo=T, out.width="40%",fig.asp=.56}
+packing$Plant_ <- as.factor(packing$Plant_Name)
+levels(packing$Plant_)
+
+```
+
+## Linear Model model with Catagorical Data
+
+```{r}
+packing.lm02 <- lm(Time ~ Boxes + Plant_ +Plant_:Boxes, data=packing)
+summary(packing.lm02)
+```
+
+
+## Actual vs. Fitted Plots for the Two Models
+```{r echo=F, fig.width=12,fig.height=5}
+packing.lm01.fitted <- fitted(packing.lm01)
+packing.lm02.fitted <- fitted(packing.lm02)
+packing.lm02.resid <- resid(packing.lm02)
+
+packing.lm01.fitted.plot <- packing %>% ggplot(aes(x=Time,y=packing.lm01.fitted,color=Plant_Name)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Actual vs. Fitted (Model 1)")
+
+packing.lm02.fitted.plot <- packing %>% ggplot(aes(x=Time,y=packing.lm02.fitted, color=Plant_Name)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Actual vs. Fitted (Model 2)")
+
+multiplot(packing.lm01.fitted.plot, packing.lm02.fitted.plot, cols = 2)
+
+```
+
+## Finalize the Model
+
+```{r echo=F, fig.width=12,fig.height=5}
+packing$Plant_ <- as.factor(packing$Plant_Name)
+packing.lm03 <- lm(Time ~ Boxes + Plant_:Boxes, data=packing)
+summary(packing.lm03)
+```
+
+## Actual vs. Fitted Plots for the Two Models
+```{r echo=F, fig.width=12,fig.height=5}
+packing.lm03.fitted <- fitted(packing.lm03)
+
+packing.lm03.fitted.plot <- packing %>% ggplot(aes(x=Time,y=packing.lm03.fitted,color=Plant_Name)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Actual vs. Fitted (Model 3)")
+
+packing.lm02.fitted.plot <- packing %>% ggplot(aes(x=Time,y=packing.lm02.fitted, color=Plant_Name)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Actual vs. Fitted (Model 2)")
+
+multiplot(packing.lm03.fitted.plot, packing.lm02.fitted.plot, cols = 2)
+
+```
+
+## Interperating the model
+
+- Bakersfield
+
+```{r echo=T}
+confint(packing.lm03)
+
+```
+
+
+- Monterrey
+
+```{r echo=T, eval =T}
+
+packing.monterry <- glht(packing.lm03 , linfct = c("Boxes + Boxes:Plant_Monterey = 0"))
+
+confint(packing.monterry)
+
+```
+

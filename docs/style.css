@@ -12,3 +12,35 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+/* -----------div tips------------- */
+
+  div.puzzle, div.fyi, div.code_note, div.note {
+    padding: 1em;
+    margin: 1em 0;
+    padding-left: 100px;
+    background-size: 70px;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    min-height: 120px;
+    color: #1f5386;
+    background-color: #bed3ec;
+    border: solid 0px #dfedff;
+  }
+  
+  div.code_note {
+  background-image: url("img/code.png");
+}
+
+/* -----------div side by side------------- */
+
+div.leftcol{
+    float:left;
+    width: 50%;
+}
+
+div.rightcol{
+    float:right;
+    width: 50%;
+}
+

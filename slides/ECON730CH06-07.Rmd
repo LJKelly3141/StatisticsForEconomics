@@ -1,0 +1,222 @@
+---
+title: 'Linear Regression: Dealing with Messy Data'
+author: "Logan Kelly, Ph.D."
+date: 'Managerial Statistics - ECON 730'
+output:
+  ioslides_presentation:
+    highlight: tango
+    widescreen: true
+    theme: spacelab
+  pdf_document: default
+  beamer_presentation:
+    slide_level: 2
+    theme: metropolis
+    highlight: tango
+    latex_engine: xelatex
+  html_document:
+    css: LectureNotes.css
+    highlight: tango
+    number_sections: yes
+    theme: lumen
+  slidy_presentation:
+    highlight: tango
+    theme: spacelab
+fontsize: 12pt
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+short-author: Dr. Kelly
+short-date: ''
+short-institute: UWRF
+short-title: Statistics Lecture
+classoption: aspectratio=169
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "", out.width="90%",fig.asp=.56, fig.align = "center", message=FALSE)
+```
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+.zoomDiv {
+  opacity: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 50px #888888;
+  max-height:100%; 
+  overflow: scroll;
+}
+
+.zoomImg {
+  width: 100%;
+}
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('slides').prepend("<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>");
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src'));
+      $('.zoomDiv').css({opacity: '1', width: '90%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'});
+    });
+  });
+</script>
+
+## R Packages Used In This Lecture {-}
+
+```{r echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+suppressMessages(library(tidyverse))
+
+#if (!require("Rmisc")) install.packages("Rmisc")
+#suppressMessages(library(Rmisc))
+
+if (!require("psych")) install.packages("psych")
+suppressMessages(library(psych))
+
+if (!require("car")) install.packages("car")
+suppressMessages(library(car))
+
+```
+ 
+ 
+# Spurious Correlation
+
+## Spurious Correlation
+<iframe src="https://www.tylervigen.com/spurious-correlations" style="border:0px #ffffff none;" name="myiFrame" scrolling="yes" frameborder="0" marginheight="0px" marginwidth="0px" height="600px" width="720px" allowfullscreen></iframe>
+
+## Conclution
+
+- Spurious correlation occurs when the data coming from two unrelated variables is apparently correlated.
+
+- You will find spurious correlation if you try many different variables.
+
+- For this reason, it is important to do hard thinking about what variables are sensible to use in a regression before running it.
+
+# Multicollinearity & Joint Significance
+
+## Multicollinearity
+
+- *Multicollinearity* is the term used to describe the correlation among the independent variables. 
+
+- A *multicollinearity problem* occurs when this correlation is high. 
+
+## The Hot Dog Case
+
+- Your company: Dubuque. 
+- Ball Park: a leading brand.
+- Ball Park may reduce hot dog price. 
+*Problem:* Impact on Dubuque’s market share.
+- Some argue that the impact will be small because Oscar Mayer is Dubuque’s leading competitor.
+
+## The Hot Dog Case Background
+
+- Ball Park produces two Hot Dogs. 
+  - Regular and All-beef Hot Dogs.
+- Current Prices:
+  - Ball Park 1.79 and 1.89 (regular and beef)
+  - Dubuque 1.49 
+  - Oscar Mayer 1.69 
+- Ball Park new pricing:
+  - Regular 1.45, All-beef 1.55
+  
+## The Question
+
+What will happen to Dubuque’s market share if Dubuque does not respond to Ball Park’s new campaign?
+
+## Load and Examen the Data
+
+```{r LoadCase, echo=T}
+hotdog <- read.csv("data/Hotdog.csv")
+head(hotdog)
+```
+
+## Linear Model
+
+
+```{r echo=T, results='hide'}
+
+hotdog.lm01 = lm(MKTDUB ~ pdub + poscar + pbpreg + pbpbeef, data=hotdog)
+summary(hotdog.lm01)
+
+```
+
+---
+```{r echo=F}
+summary(hotdog.lm01)
+```
+
+## Matrix Scater Plot
+```{r echo=T,out.width="75%",fig.asp=.56}
+pairs.panels(hotdog[,2:5])
+```
+
+## Scatter plot of pdpreg vs. pbpbeef
+
+```{r echo=F}
+hotdog %>% ggplot(aes(x=pbpreg,y=pbpbeef)) +
+  geom_point() +
+  geom_smooth(method="lm")
+```
+
+## Restricted model
+
+```{r echo=T, results='hide'}
+
+hotdog.lm02 = lm(MKTDUB ~ pdub + poscar + pbpbeef, data=hotdog)
+summary(hotdog.lm02)
+
+```
+
+---
+```{r echo=F}
+summary(hotdog.lm02)
+```
+
+## Joint signifance: the F-test
+
+\[\begin{array}{l}
+{H_0}:{\beta _{pbpreg}} = {\beta _{pbpbeef}} = 0\\
+{H_a}:{\beta _{pbpreg}} \ne 0\; \vee \;{\beta _{pbpbeef}} \ne 0
+\end{array}\]
+
+This F-test asks: Are they jointly significant?  
+
+## The F-Test
+```{r}
+# library(car)
+
+linearHypothesis(hotdog.lm01, c("pbpreg","pbpbeef"))
+
+```
+
+## How to Detect Multicollinearity
+
+- The variance inflation factor is an indicator of a multicollinearity problem.
+- Don't bother 
+- Use `pairs.panels()`
+
+# Conclution
+
+## Bottom Line
+
+- Regression must not be interpreted mechanically. 
+
+- Assumptions must be checked.
+
+- Sometimes we may need to introduce non linear terms in our regression.
+
+- Outliers and influential observations should not be modified or deleted unless there is measurement error or data entry error. 
+
+- Results driven by a few influential observations should be used with care.
+
+
+

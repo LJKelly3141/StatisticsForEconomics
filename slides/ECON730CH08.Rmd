@@ -1,0 +1,388 @@
+---
+title: 'Linear Regression: Dealing with Heteroscdaticity and Nonlinearity'
+author: "Logan Kelly, Ph.D."
+date: 'Managerial Statistics - ECON 730'
+output:
+  ioslides_presentation:
+    highlight: tango
+    widescreen: true
+    theme: spacelab
+  pdf_document: default
+  beamer_presentation:
+    slide_level: 2
+    theme: metropolis
+    highlight: tango
+    latex_engine: xelatex
+  html_document:
+    css: LectureNotes.css
+    highlight: tango
+    number_sections: yes
+    theme: lumen
+  slidy_presentation:
+    highlight: tango
+    theme: spacelab
+fontsize: 12pt
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+short-author: Dr. Kelly
+short-date: ''
+short-institute: UWRF
+short-title: Statistics Lecture
+classoption: aspectratio=169
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "", out.width="90%",fig.asp=.56, fig.align = "center", message=FALSE)
+```
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+.zoomDiv {
+  opacity: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 50px #888888;
+  max-height:100%; 
+  overflow: scroll;
+}
+
+.zoomImg {
+  width: 100%;
+}
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('slides').prepend("<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>");
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src'));
+      $('.zoomDiv').css({opacity: '1', width: '90%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'});
+    });
+  });
+</script>
+
+## R Packages Used In This Lecture {-}
+
+```{r echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+  suppressMessages(library(tidyverse))
+if (!require("psych")) install.packages("psych")
+  suppressMessages(library(psych))
+if (!require("lmtest")) install.packages("lmtest")
+  suppressMessages(library(lmtest))
+if (!require("sandwich")) install.packages("sandwich")
+  suppressMessages(library(sandwich))
+if (!require("PoEdata")) install.packages("PoEdata")
+  suppressMessages(library(PoEdata))
+if (!require("jtools")) install.packages("jtools")
+  suppressMessages(library(jtools))
+```
+ 
+ 
+# Heteroscdaticity and Nonlinearity
+
+## Recall Anscombe's Quartet
+Anscombe's Quartet of ‘Identical’ Simple Linear Regressions is a set of four pairs of x/y data that all yield identical regression output. Consider the summary statistics below.
+
+```{r}
+data("anscombe")
+attach(anscombe)
+describe(anscombe, skew = F,ranges = F)
+```
+
+## Anscombe's Quartet Ploted
+
+```{r echo=F, include=F}
+p1 <- anscombe %>% ggplot(aes(x=x1,y=y1)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 1") +
+  geom_smooth(method="lm")
+
+p2 <- anscombe %>% ggplot(aes(x=x2,y=y2)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 2") +
+  geom_smooth(method="lm")
+
+p3 <- anscombe %>% ggplot(aes(x=x3,y=y3)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 3") +
+  geom_smooth(method="lm")
+
+p4 <- anscombe %>% ggplot(aes(x=x4,y=y4)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 4") +
+  geom_smooth(method="lm")
+
+```
+
+<div style="float: left; width: 45%;">
+```{r}
+lm1 <- lm(y1~x1)
+```
+```{r echo=F, out.width="50%", fig.asp=0.56}
+p1
+```
+```{r}
+lm3 <- lm(y3~x3)
+```
+```{r echo=F, out.width="50%", fig.asp=0.56}
+p3
+```
+</div>
+
+<div style="float: right; width: 45%;">
+```{r}
+lm2 <- lm(y2~x2)
+```
+```{r echo=F, out.width="50%", fig.asp=0.56}
+p2
+```
+```{r}
+lm4 <- lm(y4~x4)
+```
+```{r echo=F, out.width="50%", fig.asp=0.56}
+p4
+```
+</div>
+
+
+
+
+## Function to Plot the Residuals vs. Predictor Plot
+
+```{r, eval=T}
+plot.resid <- function(lmod,indvar=1,title=NULL){
+df = lmod$model
+pr <- df %>% ggplot(aes(x=df[,indvar+1],y=resid(lmod))) +
+  geom_ribbon(aes(ymin = -sigma(lmod),ymax=sigma(lmod)), fill="gray",alpha=.5) +
+  geom_ribbon(aes(ymin = -sigma(lmod)*2,ymax=sigma(lmod)*2), fill="lightgray",alpha=.5) +
+  geom_point() +
+  theme_classic() +
+  ggtitle(title) +
+  ylab("Residules") +
+  xlab(names(df)[indvar+1]) +
+  geom_hline(yintercept=0, linetype="solid", color = "black") 
+  return(pr)
+}
+```
+
+## Residuals vs. Predictor Plot 
+
+<div style="float: left; width: 45%;">
+```{r echo=T, out.width="50%", fig.asp=0.56}
+lm1 <- lm(y1~x1)
+plot.resid(lm1,1,"Plot 1")
+
+lm3 <- lm(y3~x3)
+plot.resid(lm3,1,"Plot 3")
+```
+</div>
+
+<div style="float: right; width: 45%;">
+```{r echo=T, out.width="50%", fig.asp=0.56}
+lm2 <- lm(y2~x2)
+plot.resid(lm2,1,"Plot 2")
+
+lm4 <- lm(y4~x4)
+plot.resid(lm4,1,"Plot 4")
+```
+</div>
+
+## Function to Plot a Residuals vs. Fits Plot
+
+```{r, eval=T}
+plot.fitted <- function(lmod){
+df = lmod$model
+title = paste("Residuals vs. Fits (Dependent Variable: ", names(df)[1], ")", sep="")
+pr <- df %>% ggplot(aes(x=fitted(lmod),y=resid(lmod))) +
+  geom_ribbon(aes(ymin = -sigma(lmod),ymax=sigma(lmod)), fill="gray",alpha=.5) +
+  geom_ribbon(aes(ymin = -sigma(lmod)*2,ymax=sigma(lmod)*2), fill="lightgray",alpha=.5) +
+  geom_point() +
+  theme_classic() +
+  ggtitle(title) +
+  ylab("Residules") +
+  xlab("Fitted") +
+  geom_hline(yintercept=0, linetype="solid", color = "black") 
+  return(pr)
+}
+```
+
+## Residuals vs. Fits Plot
+
+<div style="float: left; width: 45%;">
+```{r echo=T, out.width="50%", fig.asp=0.56}
+plot.fitted(lm1)
+
+plot.fitted(lm3)
+```
+</div>
+
+<div style="float: right; width: 45%;">
+```{r echo=T, out.width="50%", fig.asp=0.56}
+plot.fitted(lm2)
+
+plot.fitted(lm4)
+```
+</div>
+
+# Case 1: Ad Sales
+
+## Ad Sales
+- Increasing advertising expenditures tends to increase sales
+- but at a decreasing rate.
+- We can observe these diminishing returns in a scatterplot,
+- and describe the relationship with a log-log model
+
+## Ad Sales: Scatterplot
+```{r, echo=F, out.width="80%", fig.asp=0.56}
+ad.sales <- read.csv("data/adsales.csv")
+ad.sales %>% ggplot(aes(x=exp,y=sales)) +geom_point() 
+```
+
+## Linear Model
+
+```{r, echo=F,out.width="80%", fig.asp=0.56}
+ad.sales %>% ggplot(aes(x=exp,y=sales)) + geom_point() + geom_smooth(method="lm")
+```
+
+## Linear Model:  Residuals vs. Fits Plot
+```{r, echo=F, out.width="80%", fig.asp=0.56}
+as.sales.lm <- lm(sales~exp, data=ad.sales)
+plot.fitted(as.sales.lm)
+```
+
+## Ad Sales: Scatterplot
+```{r, echo=T, out.width="60%", fig.asp=0.56}
+as.sales.lm <- lm(log(sales)~log(exp), data=ad.sales)
+ad.sales %>% ggplot(aes(x=log(exp),y=log(sales))) +
+  geom_point() +geom_smooth(method = "lm")
+```
+
+## Linear Model:  Residuals vs. Fits Plot
+```{r, echo=F, out.width="80%", fig.asp=0.56}
+plot.fitted(as.sales.lm)
+```
+
+## Interpreation
+- Linear Model:
+  - As X increases by 1, Y increases by $\beta_X$
+
+- Semi-Log Model:
+  - As X increases by 1, Y increases by $100\times\beta_X\%$
+
+- Log-Log Model:
+  - As X increases by 1%, Y increases by $\beta_X\%$
+
+
+# Case 2: Predicting Vacation Travel Distance
+
+## Vacation Travel Distance
+
+```{r}
+data("vacation")
+describe(vacation, skew=F)
+```
+
+- *miles:* miles traveled per year
+- *income:* annual income ($1000)
+- *age:* average age of adult members of household
+- *kids:* number of children in household
+
+## Estimate a model
+```{r render = 'normal_print'}
+vacation.lm <-lm(miles ~ income + age + kids, data = vacation)
+summ(vacation.lm, model.info=F)
+```
+
+---
+```{r, echo = F,  out.width="90%", fig.asp=0.56}
+plot.fitted(vacation.lm )
+```
+
+## Residuals vs. Predictor Plot 
+
+<div style="float: left; width: 45%;">
+### income
+<hr>
+```{r echo=F, out.width="50%", fig.asp=0.56}
+plot.resid(vacation.lm,1)
+```
+
+### age
+<hr>
+```{r echo=F, out.width="50%", fig.asp=0.56}
+plot.resid(vacation.lm,2)
+```
+
+</div>
+
+<div style="float: right; width: 45%;">
+
+### kids
+<hr>
+```{r echo=F, out.width="50%", fig.asp=0.56}
+plot.resid(vacation.lm,3)
+```
+</div>
+
+## Robust Breusch-Pagan Test
+
+- The function bptest() in package lmtest does (the robust version of) the Breusch-Pagan test in  R.
+
+- The Null hypothesis is no heteroskedasticiy 
+
+```{r}
+bptest(vacation.lm)
+```
+
+- The small p-value implies rejection of the null hypothesis of homoskedasticity.
+
+- This confirms our conclusion from the residual plots that heteroscadaticity is a problem.
+
+## So now what?
+
+- First try to address the cause of the heteroscadaticity - often non-linearity 
+
+```{r echo=F, out.width="50%", fig.asp=0.56}
+vacation %>% ggplot(aes(y = miles, x = income)) + geom_point()
+```
+
+## Report Robust Standard Errors
+
+```{r render = 'normal_print'}
+summ(vacation.lm, model.info=F, robust=T)
+```
+
+## Comparing Output
+
+```{r results="hide"}
+OLS <- summ(vacation.lm, model.info=F, robust=F)
+ROBUST <- summ(vacation.lm, model.info=F, robust=T)
+export_summs(OLS,ROBUST, model.names = c("OLS SE","Robust SE"))
+```
+
+##
+
+```{r echo=F}
+export_summs(OLS,ROBUST, model.names = c("OLS SE","Robust SE"))
+```
+
+
+
+
+
+
+

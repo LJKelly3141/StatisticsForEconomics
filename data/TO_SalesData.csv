@@ -1,0 +1,200 @@
+order.date,month,rep,region,item,units, unit.price, total.rev
+1/6/2014,14-Jan,Kivell,Central,Binder,88,18.99,1671.12
+1/6/2014,14-Jan,Jones,East,Pencil,86,2.19,188.34
+1/6/2014,14-Jan,Howard,East,Binder,68,21.99,1495.32
+1/23/2014,14-Jan,Kivell,Central,Binder,55,18.99,1044.45
+1/23/2014,14-Jan,Gill,Central,Binder,39,18.99,740.61
+1/23/2014,14-Jan,Parent,Central,Binder,46,18.99,873.54
+1/23/2014,14-Jan,Smith,Central,Binder,39,18.99,740.61
+1/23/2014,14-Jan,Gill,Central,Pen,103,18.99,1955.97
+1/23/2014,14-Jan,Morgan,East,Binder,73,21.99,1605.27
+2/9/2014,14-Feb,Jardine,Central,Pencil,40,4.74,189.6
+2/9/2014,14-Feb,Sorvino,Central,Pencil,106,1.89,200.34
+2/9/2014,14-Feb,Jardine,Central,Pen Set,96,15.19,1458.24
+2/9/2014,14-Feb,Morgan,Central,Binder,40,18.99,759.6
+2/26/2014,14-Feb,Gill,Central,Pen,30,18.99,569.7
+2/26/2014,14-Feb,Gill,Central,Pen,4,18.99,75.96
+2/26/2014,14-Feb,Gill,Central,Pencil,62,1.89,117.18
+2/26/2014,14-Feb,Jardine,Central,Pen Set,74,15.19,1124.06
+3/15/2014,14-Mar,Jones,Central,Pen Set,30,15.19,455.7
+3/15/2014,14-Mar,Gill,Central,Binder,61,18.99,1158.39
+3/15/2014,14-Mar,Sorvino,West,Pencil,56,2.99,167.44
+3/15/2014,14-Mar,Jardine,West,Pencil,35,1.99,69.65
+4/1/2014,14-Apr,Jones,Central,Pencil,51,1.89,96.39
+4/1/2014,14-Apr,Sorvino,Central,Binder,12,18.99,227.88
+4/1/2014,14-Apr,Jones,East,Binder,54,5.49,296.46
+4/1/2014,14-Apr,Kivell,East,Pencil,26,2.19,56.94
+4/1/2014,14-Apr,Kivell,East,Pencil,6,2.19,13.14
+4/1/2014,14-Apr,Sorvino,East,Pencil,86,2.19,188.34
+4/1/2014,14-Apr,Smith,East,Pen Set,38,17.59,668.42
+4/18/2014,14-Apr,Andrews,Central,Pencil,83,1.89,156.87
+4/18/2014,14-Apr,Sorvino,Central,Pen Set,6,15.19,91.14
+4/18/2014,14-Apr,Jardine,Central,Binder,15,18.99,284.85
+4/18/2014,14-Apr,Gill,Central,Pencil,74,1.89,139.86
+5/5/2014,14-May,Jardine,Central,Pencil,99,4.74,469.26
+5/5/2014,14-May,Jones,Central,Binder,8,18.99,151.92
+5/5/2014,14-May,Gill,East,Pen Set,81,17.59,1424.79
+5/5/2014,14-May,Andrews,West,Pencil,74,1.99,147.26
+5/5/2014,14-May,Smith,West,Binder,32,19.99,639.68
+5/22/2014,14-May,Jones,Central,Binder,6,18.99,113.94
+5/22/2014,14-May,Parent,Central,Pen,63,18.99,1196.37
+5/22/2014,14-May,Jones,Central,Pen Set,32,15.19,486.08
+5/22/2014,14-May,Jardine,Central,Binder,88,18.99,1671.12
+5/22/2014,14-May,Thompson,West,Pencil,32,1.99,63.68
+5/22/2014,14-May,Gill,West,Desk,80,125,10000
+6/8/2014,14-Jun,Jones,East,Binder,54,9.89,534.06
+6/25/2014,14-Jun,Morgan,Central,Pencil,99,4.74,469.26
+6/25/2014,14-Jun,Morgan,Central,Pencil,66,1.89,124.74
+6/25/2014,14-Jun,Andrews,Central,Pen Set,68,15.19,1032.92
+6/25/2014,14-Jun,Kivell,Central,Binder,63,18.99,1196.37
+7/12/2014,14-Jul,Sorvino,Central,Pen Set,30,15.19,455.7
+7/12/2014,14-Jul,Smith,Central,Pencil,70,1.89,132.3
+7/12/2014,14-Jul,Howard,East,Binder,26,2.19,56.94
+7/12/2014,14-Jul,Sorvino,West,Pencil,90,1.99,179.1
+7/29/2014,14-Jul,Kivell,Central,Desk,31,118.75,3681.25
+7/29/2014,14-Jul,Parent,East,Binder,73,21.99,1605.27
+7/29/2014,14-Jul,Jardine,East,Pencil,13,2.19,28.47
+7/29/2014,14-Jul,Sorvino,West,Pencil,35,1.99,69.65
+8/15/2014,14-Aug,Jones,East,Pencil,32,5.49,175.68
+8/15/2014,14-Aug,Andrews,East,Pen,68,21.99,1495.32
+8/15/2014,14-Aug,Sorvino,East,Pencil,14,2.19,30.66
+8/15/2014,14-Aug,Parent,East,Pen Set,10,17.59,175.9
+8/15/2014,14-Aug,Andrews,East,Pen,50,21.99,1099.5
+8/15/2014,14-Aug,Gill,West,Pen,96,19.99,1919.04
+9/1/2014,14-Sep,Smith,Central,Desk,2,118.75,237.5
+9/1/2014,14-Sep,Smith,East,Pen,54,21.99,1187.46
+9/1/2014,14-Sep,Parent,East,Pen Set,26,17.59,457.34
+9/1/2014,14-Sep,Thompson,East,Desk,50,137.5,6875
+9/18/2014,14-Sep,Jardine,Central,Pencil,106,1.89,200.34
+9/18/2014,14-Sep,Kivell,Central,Binder,68,18.99,1291.32
+9/18/2014,14-Sep,Jones,East,Pen Set,14,17.59,246.26
+9/18/2014,14-Sep,Kivell,East,Binder,32,21.99,703.68
+9/18/2014,14-Sep,Jardine,West,Binder,67,19.99,1339.33
+9/18/2014,14-Sep,Smith,West,Pencil,14,1.99,27.86
+10/5/2014,14-Oct,Morgan,Central,Binder,31,8.54,264.74
+10/5/2014,14-Oct,Smith,West,Desk,95,125,11875
+10/5/2014,14-Oct,Morgan,West,Pencil,2,1.99,3.98
+10/5/2014,14-Oct,Jones,West,Binder,4,19.99,79.96
+10/22/2014,14-Oct,Gill,Central,Pen Set,62,15.19,941.78
+10/22/2014,14-Oct,Gill,Central,Pen,46,18.99,873.54
+10/22/2014,14-Oct,Jones,East,Pen,58,9.89,573.62
+10/22/2014,14-Oct,Parent,East,Pencil,25,2.19,54.75
+10/22/2014,14-Oct,Gill,East,Pen,5,21.99,109.95
+10/22/2014,14-Oct,Jones,West,Desk,4,125,500
+11/8/2014,14-Nov,Kivell,Central,Pencil,55,1.89,103.95
+11/8/2014,14-Nov,Andrews,Central,Binder,46,18.99,873.54
+11/8/2014,14-Nov,Gill,Central,Binder,105,18.99,1993.95
+11/8/2014,14-Nov,Jardine,Central,Pencil,106,1.89,200.34
+11/8/2014,14-Nov,Jardine,Central,Pencil,51,1.89,96.39
+11/8/2014,14-Nov,Gill,Central,Pencil,4,1.89,7.56
+11/8/2014,14-Nov,Jardine,Central,Binder,89,18.99,1690.11
+11/8/2014,14-Nov,Parent,East,Pen,14,21.99,307.86
+11/8/2014,14-Nov,Morgan,East,Binder,4,21.99,87.96
+11/8/2014,14-Nov,Gill,East,Pen Set,68,17.59,1196.12
+11/25/2014,14-Nov,Kivell,Central,Pen Set,106,4.74,502.44
+11/25/2014,14-Nov,Jones,Central,Binder,55,18.99,1044.45
+11/25/2014,14-Nov,Jardine,Central,Pen Set,4,15.19,60.76
+12/12/2014,14-Dec,Smith,Central,Pencil,74,1.23,91.02
+12/12/2014,14-Dec,Gill,Central,Binder,68,18.99,1291.32
+12/29/2014,14-Dec,Thompson,Central,Binder,2,18.99,37.98
+12/29/2014,14-Dec,Smith,Central,Pen Set,106,15.19,1610.14
+12/29/2014,14-Dec,Gill,Central,Binder,3,18.99,56.97
+12/29/2014,14-Dec,Parent,East,Pen Set,67,17.59,1178.53
+12/29/2014,14-Dec,Gill,East,Pencil,32,2.19,70.08
+1/15/2015,15-Jan,Gill,Central,Binder,51,8.54,435.54
+1/15/2015,15-Jan,Jones,Central,Desk,74,118.75,8787.5
+1/15/2015,15-Jan,Sorvino,Central,Pencil,99,1.89,187.11
+1/15/2015,15-Jan,Parent,East,Pencil,14,2.19,30.66
+1/15/2015,15-Jan,Gill,West,Binder,60,19.99,1199.4
+2/1/2015,15-Feb,Smith,Central,Binder,96,14.25,1368
+2/1/2015,15-Feb,Kivell,Central,Pen,46,18.99,873.54
+2/1/2015,15-Feb,Howard,Central,Pencil,31,1.89,58.59
+2/1/2015,15-Feb,Thompson,Central,Pen Set,12,15.19,182.28
+2/1/2015,15-Feb,Morgan,East,Desk,24,137.5,3300
+2/1/2015,15-Feb,Kivell,East,Pen,6,21.99,131.94
+2/1/2015,15-Feb,Smith,East,Pencil,78,2.19,170.82
+2/18/2015,15-Feb,Kivell,Central,Pencil,106,1.89,200.34
+2/18/2015,15-Feb,Jones,Central,Desk,99,118.75,11756.25
+2/18/2015,15-Feb,Jones,East,Binder,4,5.49,21.96
+2/18/2015,15-Feb,Sorvino,East,Binder,32,21.99,703.68
+3/7/2015,15-Mar,Gill,Central,Binder,31,18.99,588.69
+3/7/2015,15-Mar,Jones,Central,Pen,99,18.99,1880.01
+3/7/2015,15-Mar,Jones,Central,Binder,61,18.99,1158.39
+3/7/2015,15-Mar,Parent,East,Pen,10,21.99,219.9
+3/7/2015,15-Mar,Sorvino,East,Pencil,38,2.19,83.22
+3/7/2015,15-Mar,Sorvino,West,Binder,7,19.99,139.93
+3/7/2015,15-Mar,Morgan,West,Pen Set,2,15.99,31.98
+3/24/2015,15-Mar,Jardine,Central,Pen Set,55,4.74,260.7
+3/24/2015,15-Mar,Sorvino,Central,Pen Set,62,15.19,941.78
+3/24/2015,15-Mar,Thompson,East,Pencil,86,2.19,188.34
+3/24/2015,15-Mar,Jardine,East,Pencil,58,2.19,127.02
+3/24/2015,15-Mar,Gill,East,Pencil,68,2.19,148.92
+4/10/2015,15-Apr,Andrews,Central,Pencil,73,1.89,137.97
+4/10/2015,15-Apr,Smith,Central,Binder,17,18.99,322.83
+4/10/2015,15-Apr,Parent,Central,Desk,99,118.75,11756.25
+4/10/2015,15-Apr,Howard,Central,Binder,6,18.99,113.94
+4/10/2015,15-Apr,Andrews,East,Desk,68,137.5,9350
+4/10/2015,15-Apr,Smith,East,Pen Set,50,17.59,879.5
+4/10/2015,15-Apr,Kivell,East,Pen Set,3,17.59,52.77
+4/27/2015,15-Apr,Jones,Central,Binder,103,18.99,1955.97
+4/27/2015,15-Apr,Gill,Central,Pencil,99,1.89,187.11
+4/27/2015,15-Apr,Howard,East,Pen,86,5.49,472.14
+4/27/2015,15-Apr,Jones,East,Binder,54,21.99,1187.46
+4/27/2015,15-Apr,Howard,East,Binder,54,21.99,1187.46
+4/27/2015,15-Apr,Jones,East,Binder,50,21.99,1099.5
+4/27/2015,15-Apr,Thompson,East,Pen,38,21.99,835.62
+5/14/2015,15-May,Gill,Central,Pencil,58,1.23,71.34
+5/14/2015,15-May,Sorvino,Central,Pen Set,40,15.19,607.6
+5/14/2015,15-May,Sorvino,Central,Pencil,17,1.89,32.13
+5/14/2015,15-May,Andrews,East,Pen,60,21.99,1319.4
+5/14/2015,15-May,Jardine,West,Desk,81,125,10125
+5/31/2015,15-May,Gill,Central,Binder,88,8.54,751.52
+5/31/2015,15-May,Jones,Central,Pencil,18,1.89,34.02
+5/31/2015,15-May,Parent,Central,Binder,55,18.99,1044.45
+5/31/2015,15-May,Sorvino,East,Pen Set,6,17.59,105.54
+5/31/2015,15-May,Morgan,West,Pencil,95,1.99,189.05
+6/17/2015,15-Jun,Kivell,Central,Desk,6,118.75,712.5
+6/17/2015,15-Jun,Morgan,Central,Pencil,105,1.89,198.45
+7/4/2015,15-Jul,Jones,East,Pen Set,56,5.49,307.44
+7/4/2015,15-Jul,Jardine,West,Binder,74,19.99,1479.26
+7/21/2015,15-Jul,Morgan,Central,Pen Set,61,11.87,724.07
+7/21/2015,15-Jul,Kivell,Central,Binder,40,18.99,759.6
+8/7/2015,15-Aug,Kivell,Central,Pen Set,46,22.75,1046.5
+8/7/2015,15-Aug,Kivell,Central,Pencil,46,1.89,86.94
+8/24/2015,15-Aug,Andrews,Central,Pen,3,18.99,56.97
+8/24/2015,15-Aug,Jardine,Central,Pen Set,61,15.19,926.59
+8/24/2015,15-Aug,Morgan,Central,Pencil,73,1.89,137.97
+8/24/2015,15-Aug,Jones,Central,Pen,2,18.99,37.98
+8/24/2015,15-Aug,Sorvino,West,Desk,3,275,825
+9/10/2015,15-Sep,Gill,Central,Pencil,8,1.23,9.84
+9/10/2015,15-Sep,Kivell,Central,Pen Set,62,15.19,941.78
+9/27/2015,15-Sep,Kivell,East,Binder,86,21.99,1891.14
+9/27/2015,15-Sep,Parent,East,Pen Set,85,17.59,1495.15
+9/27/2015,15-Sep,Sorvino,West,Pen,76,1.99,151.24
+10/14/2015,15-Oct,Kivell,Central,Binder,18,18.99,341.82
+10/14/2015,15-Oct,Smith,Central,Binder,18,18.99,341.82
+10/14/2015,15-Oct,Smith,Central,Pen,73,18.99,1386.27
+10/14/2015,15-Oct,Parent,East,Pencil,81,2.19,177.39
+10/14/2015,15-Oct,Jones,East,Binder,3,21.99,65.97
+10/14/2015,15-Oct,Thompson,West,Binder,57,19.99,1139.43
+10/31/2015,15-Oct,Andrews,Central,Pencil,15,1.23,18.45
+10/31/2015,15-Oct,Parent,Central,Binder,99,18.99,1880.01
+10/31/2015,15-Oct,Sorvino,East,Pencil,50,2.19,109.5
+10/31/2015,15-Oct,Smith,East,Pencil,78,2.19,170.82
+10/31/2015,15-Oct,Smith,West,Binder,62,19.99,1239.38
+11/17/2015,15-Nov,Jardine,Central,Binder,12,4.74,56.88
+11/17/2015,15-Nov,Thompson,Central,Pencil,6,1.89,11.34
+11/17/2015,15-Nov,Kivell,Central,Binder,70,18.99,1329.3
+11/17/2015,15-Nov,Morgan,Central,Pen,84,18.99,1595.16
+11/17/2015,15-Nov,Andrews,East,Desk,86,137.5,11825
+11/17/2015,15-Nov,Howard,East,Binder,67,21.99,1473.33
+12/4/2015,15-Dec,Jardine,Central,Binder,103,18.99,1955.97
+12/4/2015,15-Dec,Jones,Central,Binder,8,18.99,151.92
+12/4/2015,15-Dec,Smith,Central,Binder,15,18.99,284.85
+12/4/2015,15-Dec,Smith,Central,Pencil,106,1.89,200.34
+12/4/2015,15-Dec,Sorvino,East,Pen Set,60,17.59,1055.4
+12/4/2015,15-Dec,Howard,West,Binder,29,19.99,579.71
+12/21/2015,15-Dec,Andrews,Central,Binder,31,18.99,588.69
+12/21/2015,15-Dec,Gill,Central,Pen Set,96,15.19,1458.24
+12/21/2015,15-Dec,Thompson,East,Pen Set,26,17.59,457.34
+12/21/2015,15-Dec,Sorvino,East,Pen Set,60,17.59,1055.4

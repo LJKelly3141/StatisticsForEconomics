@@ -1,0 +1,246 @@
+---
+title: 'Linear Regression - Part II'
+author: "Logan Kelly, Ph.D."
+date: 'Managerial Statistics - ECON 730'
+output:
+  ioslides_presentation:
+    highlight: tango
+    widescreen: true
+    theme: spacelab
+  pdf_document: default
+  beamer_presentation:
+    slide_level: 2
+    theme: metropolis
+    highlight: tango
+    latex_engine: xelatex
+  html_document:
+    css: LectureNotes.css
+    highlight: tango
+    number_sections: yes
+    theme: lumen
+  slidy_presentation:
+    highlight: tango
+    theme: spacelab
+fontsize: 12pt
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+short-author: Dr. Kelly
+short-date: ''
+short-institute: UWRF
+short-title: Statistics Lecture
+classoption: aspectratio=169
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "", out.width="90%",fig.asp=.56, fig.align = "center", message=FALSE )
+
+library(knitr)
+```
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+.zoomDiv {
+  opacity: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 50px #888888;
+  max-height:100%; 
+  overflow: scroll;
+}
+
+.zoomImg {
+  width: 100%;
+}
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('slides').prepend("<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>");
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src'));
+      $('.zoomDiv').css({opacity: '1', width: '90%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'});
+    });
+  });
+</script>
+
+## R Packages Used In This Lecture {-}
+
+```{r echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+suppressMessages(library(tidyverse))
+
+if (!require("Rmisc")) install.packages("Rmisc")
+suppressMessages(library(Rmisc))
+
+if (!require("psych")) install.packages("psych")
+suppressMessages(library(psych))
+
+if (!require("jtools")) install.packages("jtools")
+suppressMessages(library(jtools))
+
+```
+ 
+ 
+# The Newspaper case
+
+## Case 1: Predicting Circulation
+
+- Case: A newspaper is considering a Sunday edition.  
+  - Will they break even?  
+  - How sure can we be?
+
+- Key Concepts:                                  
+  - Confidence and Prediction Intervals.
+	- R-squared 
+
+## The Decision Problem
+
+- Financial analysis tells us that the project is good if and only if circulation is greater than 260,000.
+
+- We need a model to predict circulation
+
+- We have a data set consisting of circulation in 35 newspapers with various levels of circulation.
+
+- The daily circulation of our paper is 190,000.  
+
+## Load the data
+
+```{r LoadCase, echo=T}
+news <- read.csv("data/newspapers.csv")
+describe(news, omit=T, skew=F)
+
+print(paste("SD away from sample mean: ", (190-mean(news$Daily))/sd(news$Daily)))
+
+```
+
+## Scatterplot of Sunday vs. Daily Circulation
+
+```{r echo=T, out.width="40%",fig.asp=.56}
+news %>% ggplot(aes(x=Daily,y=Sunday)) +
+  geom_point() +
+  geom_smooth(method=lm, se=T, fullrange=F) +
+  ggtitle("Sunday vs. Daily Circulation")
+```
+
+## Linear Model of Sunday Circulation - Estimation
+
+```{r echo=T}
+news.lm01 <- lm(Sunday ~ Daily, data = news)
+news.lm01.resid <- resid(news.lm01)
+news.lm01.fitted <- fitted(news.lm01)
+```
+
+## Linear Model of Sunday Circulation - Summary
+
+```{r echo=T, eval=F}
+library(jtools)
+summ(news.lm01, digits = 3, model.info = FALSE, confint = TRUE)
+```
+
+```{r echo=F, eval=T}
+library(jtools)
+normal_print(summ(news.lm01, digits = 3, model.info = FALSE, confint = TRUE))
+```
+
+## Diagnostic Plots
+
+## Residual plot from Simple Linear Model
+
+- Actual vs. Fitted Values
+
+```{r echo=F, fig.show="hold", out.width="35%",fig.asp=.56}
+news %>% ggplot(aes(x=Sunday,y=news.lm01.fitted)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Actual vs. Fitted")
+```
+
+- Residuals vs. Daily Circulation
+
+```{r echo=F, fig.show="hold", out.width="35%",fig.asp=.56}
+news %>% ggplot(aes(x=Daily,y=news.lm01.resid)) +
+  geom_point() +
+  ggtitle("Residule vs. Number of Boxes")
+```
+
+
+## Confidence and Prediction intervals for the Dependent Variable
+
+```{r, eval=T}
+alpha <-0.05
+predict(news.lm01, newdata = data.frame(Daily=190), interval="confidence", level =1-alpha)
+predict(news.lm01, newdata = data.frame(Daily=190), interval="predict", level =1-alpha)
+
+```
+
+## Probability of circulation being greater than 190,000
+- Store Prediction 
+```{r, eval=T}
+pred <- predict.lm(news.lm01, newdata=data.frame(Daily=190), se.fit = T, interval="predict", level =0.95)
+```
+
+## Probability of circulation being greater than 190,000
+- Standard error of prediction
+```{r}
+crit <- qt(p= alpha/2, df = pred$df, lower.tail = FALSE)
+crit
+se <- (pred$fit[,"upr"] - pred$fit[,"fit"])/crit
+se
+```
+
+## Probability of circulation being greater than 190,000
+- Calculating the probability
+```{r}
+t.score <- (260 - pred$fit[,"fit"])/se 
+t.score
+pt(q=t.score,df=pred$df,lower.tail=F)
+```
+
+
+## Function to calulate forecast probability
+
+```{r}
+data(mtcars)
+
+pred.prob <- function(lmod,new.data,alpha=0.05,alternative="greater",value){
+  prediction <- predict(lmod, 
+                        newdata = new.data,
+                        interval="predict",
+                        level =1-alpha,
+                        se.fit = T)
+
+  c.v <- qt(p=alpha/2, df = prediction$df, lower.tail = FALSE)
+  
+  se <- (prediction$fit[,"upr"] - prediction$fit[,"fit"])/c.v
+  
+  prediction$fit[,"fit"]
+  t.stat <- (value-prediction$fit[,"fit"])/se
+  tail <- alternative=="less"
+  probability <- pt(q=t.stat,df=prediction$df,lower.tail = tail)
+  return(probability)
+}
+
+pred.prob(lmod = lm(mpg ~ hp, data = mtcars),
+          new.data = data.frame(hp=190),
+          alpha = 0.95,
+          alternative <- "greater",
+          value <- 18)
+
+```
+
+## Conclution
+
+There is only a 55.6% probability that the Sunday circulation will meet or exceed 260,000.
+
+

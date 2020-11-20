@@ -1,0 +1,285 @@
+---
+title: 'Introduction to Linear Regression'
+author: "Logan Kelly, Ph.D."
+date: 'Managerial Statistics - ECON 730'
+output:
+  ioslides_presentation:
+    highlight: tango
+  pdf_document: default
+  beamer_presentation:
+    slide_level: 2
+    theme: metropolis
+    highlight: tango
+    latex_engine: xelatex
+  slidy_presentation:
+    highlight: tango
+  html_document:
+    css: LectureNotes.css
+    highlight: tango
+    number_sections: yes
+    theme: lumen
+fontsize: 12pt
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+short-author: Dr. Kelly
+short-date: ''
+short-institute: UWRF
+short-title: Statistics Lecture
+classoption: aspectratio=169
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "",fig.width=5,fig.height=4)
+
+
+```
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+.zoomDiv {
+  opacity: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 50px #888888;
+  max-height:100%; 
+  overflow: scroll;
+}
+
+.zoomImg {
+  width: 100%;
+}
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('slides').prepend("<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>");
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src'));
+      $('.zoomDiv').css({opacity: '1', width: '90%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'});
+    });
+  });
+</script>
+
+## Objectives {-}
+
+- After this lecture you should be able to use linear regression
+- Topics:
+  - Classical assumptions of regression
+  - 
+  
+
+## R Packages Used In This Lecture {-}
+
+```{r echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+if (!require("Rmisc")) install.packages("Rmisc")
+library(Rmisc)
+
+if (!require("psych")) install.packages("psych")
+library(psych)
+```
+ 
+  
+## Case Background: Autorama Car Dealership 
+- Autorama is opening a new dealership
+- Management has asked us to help choose the inventory of cars by price range
+- Management would like an prediction of the number of cars sold by price 
+
+
+## Assumptions of the Classical Linear Regression Model
+
+1. The dependent variable is **linearly** related to the coefficients of the model and the model is correctly specified. 
+2. No perfect **multicollinearity.**  No independent variable has a perfect linear relationship with any of the other independent variables.
+3. The **mean** of the **error** term is **zero.**
+4. The error term has a **constant variance.**  No heteroscedasticity.
+5. The error term is **normally distributed.** (Not absolutely necessary)
+6. The error terms are **uncorrelated** with each other.  No autocorrelation or serial correlation. 
+7. The **independent variable(s)** is/are **uncorrelated** with the equation **error term.**
+
+The focus in this lecture will be on checking that dependent variable is **linearly** related independent variables, the error term (also call the residues) show no pattern, and that the error term (residues) is reasonably close to being normally distributed.
+
+## Checking for a Linear Relationship
+Anscombe's Quartet of ‘Identical’ Simple Linear Regressions is a set of four pairs of x/y data that all yield identical regression output. Consider the summary statistics below.
+
+```{r}
+data("anscombe")
+describe(anscombe, skew = F,ranges = F)
+```
+
+---
+
+But when the data is plotted, we see only one of the x/y pairs sows a linear relationship. Thus, simple linear regression is invalid for the other three pairs.
+
+```{r echo=F, fig.width=6,fig.height=6}
+p1 <- anscombe %>% ggplot(aes(x=x1,y=y1)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 1")
+
+p2 <- anscombe %>% ggplot(aes(x=x2,y=y2)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 2")
+
+p3 <- anscombe %>% ggplot(aes(x=x3,y=y3)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 3")
+
+p4 <- anscombe %>% ggplot(aes(x=x4,y=y4)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Plot 4")
+
+multiplot(p1, p2, p3, p4, cols=2)
+```
+
+---
+
+This data set was constructed in 1973 by the statistician Francis Anscombe to demonstrate the importance of graphing data before analyzing. Here is a short video on this very special data set.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/JtsBR8SLaeA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Case: Autorama Car Dealership
+
+The management of the Autorama Car Dealership has provided us with the following data:
+
+- Buyer Income / Car price bought
+- Percentage of people in each Income Bracket
+- Nationwide data: Percentage of people who buy a new car in each income bracket in any given year
+
+We first want to find a relationship between buyer income and the price of the car bought.
+
+## Scatterplot of the Price Paid for Car vs. Cutomer Income
+
+```{r echo=F, fig.width=5,fig.height=3}
+
+car.price <- read.csv("data/autorama.csv")
+
+car.price %>% ggplot(aes(x=Income,y=Price)) +
+  geom_point() +
+  expand_limits(x = 0, y = 0) +
+  ggtitle("Price Paid for Car vs. Cutomer Income")
+```
+
+There appears to be a linear relationship between the two variables: price and income. But we also want to consider the summary statistics.
+
+```{r echo=F}
+describe(car.price, skew = F,ranges = T)
+```
+
+## A closser look at the code to draw the scaterplot
+
+```{r eval=F, fig.width=5,fig.height=3}
+# Load the tidyverse.
+if (!require("tidyverse")) install.packages("tidyverse")
+suppressMessages(library(tidyverse))
+
+# Load the autorama data
+car.price <- read.csv("data/autorama.csv")
+
+# Use ggplot2 to draw the scaterplot
+car.price %>% ggplot(aes(x=Income,y=Price)) +
+  geom_point() +
+  expand_limits(x = 0, y = 0) +
+  ggtitle("Price Paid for Car vs. Cutomer Income")
+```
+
+## Estimate linear regression
+
+In r, the `lm()` command is used to estimate linear regression models. The "lm" stands for linear model. 
+
+```{r}
+price.lm <- lm(Price ~ Income, data = car.price)
+summary(price.lm)
+```
+## Scatterplot With Regression Line
+
+```{r echo=FALSE}
+
+car.price <- read.csv("data/autorama.csv")
+
+car.price %>% ggplot(aes(x=Income,y=Price)) +
+  geom_point() +
+  geom_smooth(method=lm, formula = y ~ x, se=F) + 
+  expand_limits(y = 0) +
+  ggtitle("Price Paid for Car vs. Cutomer Income")
+```
+
+## Residual Diagnostics
+
+```{r echo=F, fig.width=10,fig.height=4}
+price.res = resid(price.lm)
+
+res.income.plot <- car.price %>% ggplot(aes(x=Income,y=price.res)) +
+  geom_point() +
+  expand_limits(y = 0, x = 0) +
+  geom_hline(yintercept=0) + 
+  ggtitle("Residuals vs. Cutomer Income")
+
+res.price.plot <- car.price %>% ggplot(aes(x=Price,y=price.res)) +
+  geom_point() +
+  expand_limits(y = 0, x = 0) +
+  geom_abline(intercept = -1*mean(car.price$Price), slope = 1) +
+  ggtitle("Residuals vs. Price Paid for Car")
+
+multiplot(res.income.plot, res.price.plot, cols=2)
+
+```
+
+## A closer look at the code to draw the Residual Diagnostics 
+```{r eval=F, fig.width=10,fig.height=4}
+# Provides the multiplot() command
+if (!require("Rmisc")) install.packages("Rmisc")
+suppressMessages(library(Rmisc))
+
+# store the residuals in a vector
+price.res = resid(price.lm)
+
+res.income.plot <- car.price %>% ggplot(aes(x=Income,y=price.res)) +
+  geom_point() +
+  expand_limits(y = 0, x = 0) +
+  geom_hline(yintercept=0) + 
+  ggtitle("Residuals vs. Cutomer Income")
+
+res.price.plot <- car.price %>% ggplot(aes(x=Price,y=price.res)) +
+  geom_point() +
+  expand_limits(y = 0, x = 0) +
+  geom_abline(intercept = -1*mean(car.price$Price), slope = 1) +
+  ggtitle("Residuals vs. Price Paid for Car")
+
+multiplot(res.income.plot, res.price.plot, cols=2)
+
+```
+
+## Fitted vs Actual Plot
+
+```{r fig.width=5,fig.height=4}
+price.fitted <- fitted(price.lm)
+car.price %>% ggplot(aes(x=Price,y=price.fitted)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  xlab("Actual") +
+  ylab("Fitted") +
+  ggtitle("Residuals vs. Price Paid for Car")
+
+```
+
+## Normality of the Residuals
+```{r}
+hist(price.res,probability = T, ylim=c(0,.0001))
+curve(dnorm(x,mean=mean(price.res),sd=(sd(price.res))), 
+      col="darkblue", lwd=2, add=TRUE, yaxt="n")
+```
+

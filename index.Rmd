@@ -3,7 +3,57 @@ title: "Statistics for Economics with R"
 author: "Logan Kelly, Ph.D."
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+institute: University of Wisconsin-River Falls
+department: College of Business and Economics
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+```{r echo=F,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+  suppressMessages(library(tidyverse))
+
+if (!require("psych")) install.packages("psych")
+  suppressMessages(library(psych))
+
+if (!require("lmtest")) install.packages("lmtest")
+  suppressMessages(library(lmtest))
+
+if (!require("sandwich")) install.packages("sandwich")
+  suppressMessages(library(sandwich))
+
+if (!require("PoEdata")) install.packages("PoEdata")
+  suppressMessages(library(PoEdata))
+
+if (!require("jtools")) install.packages("jtools")
+  suppressMessages(library(jtools))
+
+if (!require("tutorial")) install.packages("tutorial")
+  suppressMessages(library(tutorial))
+
+if (!require("testwhat")) install_github("datacamp/testwhat")
+  suppressMessages(library(testwhat))
+```
+
+```{r, include=FALSE}
+tutorial::go_interactive(greedy = F, height = 300)
+```
+
 
 # Preface {-}
 
+In this text, the following boxes will be used to set off content.
+
+:::code_note
+Explinations of sample R code will be placed in boxes like this.
+:::
