@@ -130,7 +130,7 @@ dat2 %>% ggplot(aes(x=fit,y=res)) +
 
 :::
 
-## Assumption 2: Mean of the residules.
+## Assumption 2: Mean of the residuals
 
 First exam the summary statistics of the residuals. Both the mean and the median should be very close to zero. Recalling the first of Anscombe's Quartet. 
 
