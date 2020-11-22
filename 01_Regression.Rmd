@@ -10,8 +10,6 @@ Base R has a great deal of functionality, but the real power of R is that thousa
 
 - `tidyverse` The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures (see https://www.tidyverse.org/).
 
-- `Rmisc` The Rmisc library contains many functions useful for data analysis and utility operations (see https://cran.r-project.org/web/packages/Rmisc/index.html).
-
 - `psych` A general purpose toolbox for personality, psychometric theory and experimental psychology (see https://cran.r-project.org/web/packages/psych/index.html)
 
 The following code chunk test weather each package has been installed, installs the package if needed, and then loads the package. 
@@ -19,9 +17,6 @@ The following code chunk test weather each package has been installed, installs 
 ```{r  echo=T,message=F,warning=F,results='hide'}
 if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
-
-if (!require("Rmisc")) install.packages("Rmisc")
-library(Rmisc)
 
 if (!require("psych")) install.packages("psych")
 library(psych)
@@ -179,6 +174,33 @@ dat2 %>% ggplot(aes(x=fit,y=res)) +
 
 We can also use the standard error of regression, or what R calls the `Residual standard error`. The following function draws a little fancier residual vs. fit plot. It plots shaded regions corresponding to one and two standard errors of regression above and below zero. Most of the residuals should be within one standard error of regression plus or minus zero and nearly all residuals should be within plus or minus two standard error of regression of zero.
 
+```{r echo=F}
+plot.fitted <- function(lmod) {
+  df = lmod$model
+  title = paste("Residuals vs. Fits (Dependent Variable: ",
+                names(df)[1],
+                ")",
+                sep = "")
+  pr <- df %>% ggplot(aes(x = fitted(lmod), y = resid(lmod))) +
+    geom_ribbon(aes(ymin = -sigma(lmod), ymax = sigma(lmod)),
+                fill = "gray",
+                alpha = .5) +
+    geom_ribbon(aes(ymin = -sigma(lmod) * 2, ymax = sigma(lmod) * 2),
+                fill = "lightgray",
+                alpha = .5) +
+    geom_point() +
+    theme_classic() +
+    ggtitle(title) +
+    ylab("Residules") +
+    xlab("Fitted") +
+    geom_hline(yintercept = 0,
+               linetype = "solid",
+               color = "black")
+  return(pr)
+}
+```
+
+
 ```{r tut=T, ex="fun", type="pre-exercise-code",  height = 600}
 if (!require("ggplot2")) install.packages("ggplot2")
 library(ggplot2)
@@ -300,8 +322,37 @@ can be used to estimate Beta. Under the CAPM assumptions, $\alpha = 0$ and $\bet
 
 **Enough theory. Let's calculate a Beta.** Let's estimate the Beta for Tesla, Inc. (TSLA). To do so we need the following steps.
 
-**Step 1. Get the data.** We need stock price data for Tesla, the market return and the risk free rate of return.  Use the S&P 500 Index as the proxy for the market return and 3-month Treasury constant maturity as the risk free rate.
+**Step 1. Get the data.** We need stock price data for Tesla, the market return and the risk free rate of return.  Use the S&P 500 Index as the proxy for the market return and 3-month Treasury constant maturity as the risk free rate. The file stock.csv has the excess return for the S&P 500 Tesla and Apple.
 
+```{r echo=T}
+stock.return <- read.csv("data/stock.csv")
+head(stock.return)
+```
 
+**Step 2. Estimate the model.** We will first plot Tesla's excess returns vs. the S&P 500. Then we estimate the linear regression.
+
+```{r echo=T}
+beta.lm <- lm(TSLA ~ SP500, data = stock.return)
+summary(beta.lm)
+```
+
+**Step 2. Check the model.** We need to check that the model does not violate the assumptions of linear regression. First we check for a linear relationship by plotting Tesla's excess returns vs. the S&P 500.
+
+```{r echo=T}
+stock.return %>% ggplot(aes(x=SP500,y=TSLA)) +
+  geom_point()
+```
+
+Next, we check the residuals vs. fit plot. We will use the `plot.fitted()` function we defined earlier. To use the function in your analysis, simply copy and past it into you R script.
+
+```{r echo=T}
+plot.fitted(beta.lm)
+```
+
+Finally, we check that the residuals are reasonably close to being normally distributed. We will use the `plot.normal()` function we defined earlier.
+
+```{r echo=T}
+plot.normal(beta.lm)
+```
 
 
