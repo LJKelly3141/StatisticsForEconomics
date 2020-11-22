@@ -2,7 +2,7 @@ linear-regression---part-i
 r-packages-used-in-this-chapter
 assumptions-of-the-classical-linear-regression-model
 assumption-1.-linearity
-asumption-2-mean-of-the-residules.
-asumption-2-normally-distributed-residuals
+assumption-2-mean-of-the-residules.
+assumption-3-normally-distributed-residuals
 dealing-with-catagorical-data
 dealing-with-heteroscdaticity-and-nonlinearity

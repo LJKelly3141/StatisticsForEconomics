@@ -24,7 +24,7 @@
 <meta name="author" content="Logan Kelly, Ph.D." />
 
 
-<meta name="date" content="2020-11-20" />
+<meta name="date" content="2020-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -139,8 +139,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#r-packages-used-in-this-chapter"><i class="fa fa-check"></i><b>1.1</b> R Packages Used in this Chapter</a></li>
 <li class="chapter" data-level="1.2" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumptions-of-the-classical-linear-regression-model"><i class="fa fa-check"></i><b>1.2</b> Assumptions of the Classical Linear Regression Model</a></li>
 <li class="chapter" data-level="1.3" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-1.-linearity"><i class="fa fa-check"></i><b>1.3</b> Assumption 1. Linearity</a></li>
-<li class="chapter" data-level="1.4" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#asumption-2-mean-of-the-residules."><i class="fa fa-check"></i><b>1.4</b> Asumption 2: Mean of the residules.</a></li>
-<li class="chapter" data-level="1.5" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#asumption-2-normally-distributed-residuals"><i class="fa fa-check"></i><b>1.5</b> Asumption 2: Normally distributed residuals</a></li>
+<li class="chapter" data-level="1.4" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-2-mean-of-the-residules."><i class="fa fa-check"></i><b>1.4</b> Assumption 2: Mean of the residules.</a></li>
+<li class="chapter" data-level="1.5" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-3-normally-distributed-residuals"><i class="fa fa-check"></i><b>1.5</b> Assumption 3: Normally distributed residuals</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="dealing-with-catagorical-data.html"><a href="dealing-with-catagorical-data.html"><i class="fa fa-check"></i><b>2</b> Dealing with Catagorical Data</a></li>
 <li class="chapter" data-level="3" data-path="dealing-with-heteroscdaticity-and-nonlinearity.html"><a href="dealing-with-heteroscdaticity-and-nonlinearity.html"><i class="fa fa-check"></i><b>3</b> Dealing with Heteroscdaticity and Nonlinearity</a></li>
@@ -233,8 +233,8 @@ eyJsYW5ndWFnZSI6InIiLCJwcmVfZXhlcmNpc2VfY29kZSI6ImlmICghcmVxdWlyZShcImdncGxvdDJc
 
 </div>
 </div>
-<div id="asumption-2-mean-of-the-residules." class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Asumption 2: Mean of the residules.</h2>
+<div id="assumption-2-mean-of-the-residules." class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Assumption 2: Mean of the residules.</h2>
 <p>First exam the summary statistics of the residuals. Both the mean and the median should be very close to zero. Recalling the first of Anscombe’s Quartet.</p>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -1.92127 -0.45577 -0.04136  0.00000  0.70941  1.83882</code></pre>
@@ -255,8 +255,10 @@ eyJsYW5ndWFnZSI6InIiLCJwcmVfZXhlcmNpc2VfY29kZSI6ImlmICghcmVxdWlyZShcImdncGxvdDJc
 eyJsYW5ndWFnZSI6InIiLCJwcmVfZXhlcmNpc2VfY29kZSI6ImlmICghcmVxdWlyZShcImdncGxvdDJcIikpIGluc3RhbGwucGFja2FnZXMoXCJnZ3Bsb3QyXCIpXG5saWJyYXJ5KGdncGxvdDIpXG5pZiAoIXJlcXVpcmUoXCJkcGx5clwiKSkgaW5zdGFsbC5wYWNrYWdlcyhcImRwbHlyXCIpXG5saWJyYXJ5KGRwbHlyKSIsInNhbXBsZSI6InBsb3QuZml0dGVkIDwtIGZ1bmN0aW9uKGxtb2QpIHtcbiAgZGYgPSBsbW9kJG1vZGVsXG4gIHRpdGxlID0gcGFzdGUoXCJSZXNpZHVhbHMgdnMuIEZpdHMgKERlcGVuZGVudCBWYXJpYWJsZTogXCIsXG4gICAgICAgICAgICAgICAgbmFtZXMoZGYpWzFdLFxuICAgICAgICAgICAgICAgIFwiKVwiLFxuICAgICAgICAgICAgICAgIHNlcCA9IFwiXCIpXG4gIHByIDwtIGRmICU+JSBnZ3Bsb3QoYWVzKHggPSBmaXR0ZWQobG1vZCksIHkgPSByZXNpZChsbW9kKSkpICtcbiAgICBnZW9tX3JpYmJvbihhZXMoeW1pbiA9IC1zaWdtYShsbW9kKSwgeW1heCA9IHNpZ21hKGxtb2QpKSxcbiAgICAgICAgICAgICAgICBmaWxsID0gXCJncmF5XCIsXG4gICAgICAgICAgICAgICAgYWxwaGEgPSAuNSkgK1xuICAgIGdlb21fcmliYm9uKGFlcyh5bWluID0gLXNpZ21hKGxtb2QpICogMiwgeW1heCA9IHNpZ21hKGxtb2QpICogMiksXG4gICAgICAgICAgICAgICAgZmlsbCA9IFwibGlnaHRncmF5XCIsXG4gICAgICAgICAgICAgICAgYWxwaGEgPSAuNSkgK1xuICAgIGdlb21fcG9pbnQoKSArXG4gICAgdGhlbWVfY2xhc3NpYygpICtcbiAgICBnZ3RpdGxlKHRpdGxlKSArXG4gICAgeWxhYihcIlJlc2lkdWxlc1wiKSArXG4gICAgeGxhYihcIkZpdHRlZFwiKSArXG4gICAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCxcbiAgICAgICAgICAgICAgIGxpbmV0eXBlID0gXCJzb2xpZFwiLFxuICAgICAgICAgICAgICAgY29sb3IgPSBcImJsYWNrXCIpXG4gIHJldHVybihwcilcbn1cblxuIyBFeGFtcGxlXG5cbmFuc2NvbWJlLmxtMDEgPC0gbG0oeTEgfiB4MSwgZGF0YSA9IGFuc2NvbWJlKVxucGxvdC5maXR0ZWQoYW5zY29tYmUubG0wMSApIn0=
 </div>
 </div>
-<div id="asumption-2-normally-distributed-residuals" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> Asumption 2: Normally distributed residuals</h2>
+<div id="assumption-3-normally-distributed-residuals" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Assumption 3: Normally distributed residuals</h2>
+<p>This is one of the least important assumptions because linear regression is ver robust with respect to normality of the residuals. A great way to evaluate the normality assumption is to plot a histogram of the residuals. Plot 1 (left column) shows the residuals from the first of the x/y pairs in Anscombe’s Quartet. I have also plotted a normal cure over the histogram. The histogram is reasonably close to the normal curve.</p>
+<p>By contrast, Plot 2 (right column) shows the residuals from the second of the x/y pairs in Anscombe’s Quartet. We have already shown that linear regression is not a good model for this data, and the non normality of the residuals is just one more symptom of that fact.</p>
 <div class="leftcol">
 <p><strong>Plot 1</strong>
 <img src="bookdownproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>

@@ -135,7 +135,7 @@ dat2 %>% ggplot(aes(x=fit,y=res)) +
 
 :::
 
-## Asumption 2: Mean of the residules.
+## Assumption 2: Mean of the residules.
 
 First exam the summary statistics of the residuals. Both the mean and the median should be very close to zero. Recalling the first of Anscombe's Quartet. 
 
@@ -219,7 +219,11 @@ plot.fitted(anscombe.lm01 )
 
 ```
 
-## Asumption 2: Normally distributed residuals 
+## Assumption 3: Normally distributed residuals 
+
+This is one of the least important assumptions because linear regression is ver robust with respect to normality of the residuals. A great way to evaluate the normality assumption is to plot a histogram of the residuals. Plot 1 (left column) shows the residuals from the first of the x/y pairs in Anscombe's Quartet. I have also plotted a normal cure over the histogram. The histogram is reasonably close to the normal curve.
+
+By contrast, Plot 2 (right column) shows the residuals from the second of the x/y pairs in Anscombe's Quartet. We have already shown that linear regression is not a good model for this data, and the non normality of the residuals is just one more symptom of that fact.
 
 ```{r echo=F}
 plot.normal <- function(lmod) {
@@ -251,7 +255,8 @@ plot.normal(anscombe.lm02 )
 ```
 :::
 
-Here is a function that will help 
+Here is a function that will help plot the histogram of the residuals.
+
 ```{r tut=T, ex="norm1", type="pre-exercise-code",  height = 600}
 # if (!require("ggplot2")) install.packages("ggplot2")
 # library(ggplot2)
@@ -278,3 +283,25 @@ plot.normal <- function(lmod) {
 anscombe.lm01 <- lm(y2 ~ x2, data = anscombe)
 plot.normal(anscombe.lm01 )
 ```
+
+## Case Study 1: How risky is that stock?
+
+In this case study, we will use linear regression to calculate the beta of a particular stock.
+
+**What is Beta?** Beta is a measure of the volatility of a security or portfolio compared to the market as a whole. Volatility is a common measure of risk, i.e. the more volatile, or variable, the return of an asset are, the more risky the asset is considered to be. 
+
+**How is Beta Calculated?** From the Capital Asset Pricing Model (CAPM), we have the following
+
+$$R^e = RF+\beta(RM-RF)$$
+where $R$ is our stock, or portfolio, rate of return, $RF$ is the rate of return on a default risk free asset, and $RM$ is the market rate of return. Define $R'$ to be our stock's excess return, i.e. $R-RF$, and $RM'$ to be the market excess return, i.e. $RM-RF$, then the linear model
+
+$$R = \alpha + \beta (RM') + \epsilon$$
+can be used to estimate Beta. Under the CAPM assumptions, $\alpha = 0$ and $\beta$ is the stock, or portfolio, Beta.
+
+**Enough theory. Let's calculate a Beta.** Let's estimate the Beta for Tesla, Inc. (TSLA). To do so we need the following steps.
+
+**Step 1. Get the data.** We need stock price data for Tesla, the market return and the risk free rate of return.  Use the S&P 500 Index as the proxy for the market return and 3-month Treasury constant maturity as the risk free rate.
+
+
+
+
