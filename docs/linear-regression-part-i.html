@@ -24,7 +24,7 @@
 <meta name="author" content="Logan Kelly, Ph.D." />
 
 
-<meta name="date" content="2020-11-22" />
+<meta name="date" content="2020-12-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,8 +32,8 @@
   
   
 <link rel="prev" href="index.html"/>
-
-<script src="libs/header-attrs-2.4/header-attrs.js"></script>
+<link rel="next" href="linear-regression-part-ii.html"/>
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -139,9 +141,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#r-packages-used-in-this-chapter"><i class="fa fa-check"></i><b>1.1</b> R Packages Used in this Chapter</a></li>
 <li class="chapter" data-level="1.2" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumptions-of-the-classical-linear-regression-model"><i class="fa fa-check"></i><b>1.2</b> Assumptions of the Classical Linear Regression Model</a></li>
 <li class="chapter" data-level="1.3" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-1.-linearity"><i class="fa fa-check"></i><b>1.3</b> Assumption 1. Linearity</a></li>
-<li class="chapter" data-level="1.4" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-2-mean-of-the-residules."><i class="fa fa-check"></i><b>1.4</b> Assumption 2: Mean of the residules.</a></li>
+<li class="chapter" data-level="1.4" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-2-mean-of-the-residuals"><i class="fa fa-check"></i><b>1.4</b> Assumption 2: Mean of the residuals</a></li>
 <li class="chapter" data-level="1.5" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-3-normally-distributed-residuals"><i class="fa fa-check"></i><b>1.5</b> Assumption 3: Normally distributed residuals</a></li>
 <li class="chapter" data-level="1.6" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#case-study-1-how-risky-is-that-stock"><i class="fa fa-check"></i><b>1.6</b> Case Study 1: How risky is that stock?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html"><i class="fa fa-check"></i><b>2</b> Linear Regression - Part II</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#r-packages-used-in-this-chapter-1"><i class="fa fa-check"></i><b>2.1</b> R Packages Used in this Chapter</a></li>
+<li class="chapter" data-level="2.2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#assumptions-of-the-classical-linear-regression-model-1"><i class="fa fa-check"></i><b>2.2</b> Assumptions of the Classical Linear Regression Model</a></li>
+<li class="chapter" data-level="2.3" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#assumption-4-multicollinearity"><i class="fa fa-check"></i><b>2.3</b> Assumption 4: Multicollinearity</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#the-hot-dog-case"><i class="fa fa-check"></i><b>2.3.1</b> The Hot Dog Case</a></li>
+<li class="chapter" data-level="2.3.2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#checking-for-multicollinearity"><i class="fa fa-check"></i><b>2.3.2</b> Checking for multicollinearity</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#testing-for-joint-significance"><i class="fa fa-check"></i><b>2.4</b> Testing for joint significance</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -228,8 +241,8 @@ eyJsYW5ndWFnZSI6InIiLCJwcmVfZXhlcmNpc2VfY29kZSI6ImlmICghcmVxdWlyZShcImdncGxvdDJc
 
 </div>
 </div>
-<div id="assumption-2-mean-of-the-residules." class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Assumption 2: Mean of the residules.</h2>
+<div id="assumption-2-mean-of-the-residuals" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Assumption 2: Mean of the residuals</h2>
 <p>First exam the summary statistics of the residuals. Both the mean and the median should be very close to zero. Recalling the first of Anscombe’s Quartet.</p>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -1.92127 -0.45577 -0.04136  0.00000  0.70941  1.83882</code></pre>
@@ -326,8 +339,8 @@ can be used to estimate Beta. Under the CAPM assumptions, <span class="math inli
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-regression-part-ii.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

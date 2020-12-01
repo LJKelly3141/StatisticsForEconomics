@@ -1,0 +1,58 @@
+---
+title: "Tools for summarizing and visualizing regression models"
+author: "Jacob Long"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: "spacelab"
+vignette: >
+  %\VignetteIndexEntry{Tools for summarizing and visualizing regression models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r echo=FALSE}
+required <- c("survey", "huxtable", "broom", "lme4", "quantreg")
+if (!all(sapply(required, requireNamespace, quietly = TRUE)))
+  knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(message = F, warning = F, fig.width = 6, fig.height = 4,
+                      dpi = 100, render = knitr::normal_print)
+library(jtools)
+```
+
+The support `jtools` provides for helping to understand and report the results
+of regression models falls into a few broad categories:
+
+* Generating flexible table output in the console that includes multiple
+standard error specifications, toggles for confidence intervals, VIFs, p values,
+and so on (`summ`)
+* Plotting predicted data from models to aid in substantive interpretation
+and understanding model fit, including models with interactions (`effect_plot`;
+see other vignette)
+* Plotting regression coefficients and their uncertainty in a visually appealing
+way (`plot_coefs`, `plot_summs`)
+* Exporting regression summaries as tables in PDF/LaTeX and Word formats for
+publication (`export_summs`)
+
+# `summ`
+
+When sharing analyses with colleagues unfamiliar with R, I found that the output
+generally was not clear to them. Things were even worse if I wanted to give
+them information that is not included in the `summary` like robust
+standard errors, scaled coefficients, and VIFs since the functions for 
+estimating these don't append them to a typical regression table. After creating
+output tables "by hand" on multiple occasions, I thought it best to pack things
+into a reusable function: It became `summ`.
+
+With no user-specified arguments except a fitted model, the output of `summ`
+looks like this:
+
+```{r}
+# Fit model
+states <- as.data.frame(state.x77)
+fit <- lm(Income ~ Frost + Illiteracy + Murder, data = states)
+summ(fit)
+```
+

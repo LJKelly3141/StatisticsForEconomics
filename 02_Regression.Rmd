@@ -1,0 +1,135 @@
+# Linear Regression - Part II
+
+<script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script>
+<script>var element =  $("div[class="book"]");element.classList.remove("with-summary");</script>
+
+
+## R Packages Used in this Chapter
+
+Base R has a great deal of functionality, but the real power of R is that thousands of people developing packages that expand the capabilities of R. In his chapter we will be using the following packages.
+
+- `tidyverse` The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures (see https://www.tidyverse.org/).
+
+- `psych` A general purpose toolbox for personality, psychometric theory and experimental psychology (see https://cran.r-project.org/package=psych)
+
+- `jtools` A collection of tools to more efficiently understand and share the results of regression analyses (see https://cran.r-project.org/package=jtools)
+
+- `car` Functions to accompany J. Fox and S. Weisberg, *An R Companion to Applied Regression*, Third Edition, Sage, 2019. (see https://cran.r-project.org/package=car)
+
+The following code chunk test weather each package has been installed, installs the package if needed, and then loads the package. 
+
+```{r  echo=T,message=F,warning=F,results='hide'}
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+if (!require("psych")) install.packages("psych")
+library(psych)
+
+if (!require("jtools")) install.packages("jtools")
+library(jtools)
+
+if (!require("car")) install.packages("car")
+library(car)
+
+```
+
+
+`install.packages()` command installs the package and the `library()` command loads the package. For now, you can copy this code and paste this code to use it in your own analysis.
+
+## Assumptions of the Classical Linear Regression Model
+
+1. The dependent variable is **linearly** related to the coefficients of the model and the model is correctly specified. 
+2. The **mean** of the **error** term is **zero.**
+3. The error term is **normally distributed.** (Not absolutely necessary)
+4. No perfect **multicollinearity.**  No independent variable has a perfect linear relationship with any of the other independent variables.
+5. The error term has a **constant variance.**  No heteroscedasticity.
+6. The error terms are **uncorrelated** with each other.  No autocorrelation or serial correlation. 
+7. The **independent variable(s)** is/are **uncorrelated** with the equation **error term.**
+
+In this chapter, we will focus on the assumptions 4, 5 and 6.
+
+## Assumption 4: Multicollinearity
+
+*Multicollinearity* is the term used to describe the correlation among the independent variables. Recall that the correlation between variables is a measure of how closely the variables move together. Variables that are positively correlated move in the same direction and variables that are negatively correlated move in opposite directions. Multicollinearity can be a problem when this correlation is high. 
+
+When there is high correlation among the independent variables, it can be difficult to distinguish between the effects of each independent variable on the dependent variable. To understand this, think of the independent variables as strings pulling on the dependent variable. If the the independent variables pull in different directions, i.e. are uncorrelated with each other, then we can see the effect of each independent variable. But if the independent variables pull in the same direction, i.e. are correlated with each other, then the effects of each independent variable becomes muddled. 
+
+Multicollinearity can lead to the following problems:
+
+1. Independent variables are incorrectly found to be insignificant.
+2. Coefficients have incorrect signs.
+
+Perfect multicolinearity occurs when independent variables have a correlation coefficient of 1 or -1. In this case, the perfect collinear variables must be removed to calculate a linear regression.
+
+### The Hot Dog Case
+
+The Dubuque Hot Dog company produces low price hot dogs. Their competition includes Ball Park, the leading brand, and Oscar Mayer. Ball Park produces two types of hot dogs, regular and all-beef, and is planning on reducing the price its hot dogs. The CEO of Debuque would like impact on Dubuque’s market share. Here are the current and new prices.
+
+| Company     	| Product  	| Current Price 	| New Price 	|
+|:-------------	|:---------	|---------------:	|-----------:	|
+| Dubuque     	| Regular  	| 1.49          	|           	|
+| Oscar Mayer 	| Regular  	| 1.69          	|           	|
+| Ball Park   	| Regular  	| 1.79          	| 1.45      	|
+| Ball Park   	| All-beef 	| 1.89          	| 1.55      	|
+
+Table: Hot Dog Retail Pricing
+
+The CEO believes that the impact will be small because Oscar Mayer is Dubuque’s leading competitor, and presents you with the following regression analysis to support his argument.
+
+```{r, echo=F}
+hotdog <- read.csv("data/Hotdog.csv")
+hotdog.lm01 = lm(MKTDUB ~ pdub + poscar + pbpreg + pbpbeef, data=hotdog)
+summ(hotdog.lm01, vif=T, digits = 5)
+```
+
+The CEO notes that the Ball Park hot dog prices, `pbpreg` and `pbpbeef`, have an insignificant effect on Dubuque's market share. We are given the data used to estimate the regression.
+
+```{r LoadCase, echo=T}
+hotdog <- read.csv("data/Hotdog.csv")
+head(hotdog)
+```
+Deffinitions of each variables:
+
+- MKTDUB: Dubuque’s market share
+- pdub: Dubuque’s hot dog price
+- poscar: Oscar Mayer's hot dog price
+- pbpreg: Ball Park's regular hot dog price
+- pbpbeef: Ball Park's all-beef hot dog price
+
+### Checking for multicollinearity
+
+The variance inflation factor is an indicator of a multicollinearity problem. You can calculate the variance inflation factor by adding `vif=T` to the `summary()` command. A VIF greater than 10 may indicate a problem with multicollinearity. This is not my favorite way of checking though.
+
+A better way is to plot a Paris Panel you can do this the `pairs.panels()` command from the `psych` package.
+
+```{r}
+psych::pairs.panels(hotdog)
+```
+
+The Paris Panel plot provides skater plots of each pair of variable in the data frame, a histogram of each variable and th correlation between each pair of variables in the data frame. If the absolute value of the correlation coefficient is over 0.7, you need to watch for Multicollinearity.  If the absolute value of the correlation coefficient is over 0.9, you Multicollinearity is a problem, and you should consider dropping one of the variables from your model.
+
+## Testing for joint significance 
+
+We could drop one of the Ball Park Hot dog prices from our regression model as follows. Note that we use `summ()` from the `jtools` package to summarize the model.
+
+```{r, echo=F}
+hotdog.lm02 = lm(MKTDUB ~ pdub + poscar + pbpreg, data=hotdog)
+jtools::summ(hotdog.lm02, vif=T, digits = 5)
+```
+
+In this model, the price of Ball Park regular hot dogs is significant. However, the CEO in unconvinced. He is concerned that leaving price of Ball Park all-beef hot dogs invalidates the model. We explain the problem of multicollinarity, but the CEO remains skeptical. 
+
+In this situation, an F-test of joint significance is the perfect tool. The F-test of joint hypothesis test looks like this
+
+\[\begin{array}{l}
+{H_0}:{\beta _{pbpreg}} = {\beta _{pbpbeef}} = 0\\
+{H_a}:{\beta _{pbpreg}} \ne 0\; \vee \;{\beta _{pbpbeef}} \ne 0
+\end{array}\]
+
+This F-test asks: Are they jointly significant?  The test can be preformed using the `linearHypothesis()` comand from the `car` package.
+
+```{r}
+car::linearHypothesis(hotdog.lm01, c("pbpreg","pbpbeef"))
+```
+
+Since the F-statistic is large (the p-value is small). We reject the null hypothesis and conclude that Ball Park prices are jointly significant.

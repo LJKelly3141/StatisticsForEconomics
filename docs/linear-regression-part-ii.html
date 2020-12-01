@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Linear Regression - Part II | Statistics for Economics with R</title>
+  <meta name="description" content="Chapter 2 Linear Regression - Part II | Statistics for Economics with R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Linear Regression - Part II | Statistics for Economics with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Linear Regression - Part II | Statistics for Economics with R" />
+  
+  
+  
+
+<meta name="author" content="Logan Kelly, Ph.D." />
+
+
+<meta name="date" content="2020-12-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linear-regression-part-i.html"/>
+
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistics for Economics with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html"><i class="fa fa-check"></i><b>1</b> Linear Regression - Part I</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#r-packages-used-in-this-chapter"><i class="fa fa-check"></i><b>1.1</b> R Packages Used in this Chapter</a></li>
+<li class="chapter" data-level="1.2" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumptions-of-the-classical-linear-regression-model"><i class="fa fa-check"></i><b>1.2</b> Assumptions of the Classical Linear Regression Model</a></li>
+<li class="chapter" data-level="1.3" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-1.-linearity"><i class="fa fa-check"></i><b>1.3</b> Assumption 1. Linearity</a></li>
+<li class="chapter" data-level="1.4" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-2-mean-of-the-residuals"><i class="fa fa-check"></i><b>1.4</b> Assumption 2: Mean of the residuals</a></li>
+<li class="chapter" data-level="1.5" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#assumption-3-normally-distributed-residuals"><i class="fa fa-check"></i><b>1.5</b> Assumption 3: Normally distributed residuals</a></li>
+<li class="chapter" data-level="1.6" data-path="linear-regression-part-i.html"><a href="linear-regression-part-i.html#case-study-1-how-risky-is-that-stock"><i class="fa fa-check"></i><b>1.6</b> Case Study 1: How risky is that stock?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html"><i class="fa fa-check"></i><b>2</b> Linear Regression - Part II</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#r-packages-used-in-this-chapter-1"><i class="fa fa-check"></i><b>2.1</b> R Packages Used in this Chapter</a></li>
+<li class="chapter" data-level="2.2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#assumptions-of-the-classical-linear-regression-model-1"><i class="fa fa-check"></i><b>2.2</b> Assumptions of the Classical Linear Regression Model</a></li>
+<li class="chapter" data-level="2.3" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#assumption-4-multicollinearity"><i class="fa fa-check"></i><b>2.3</b> Assumption 4: Multicollinearity</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#the-hot-dog-case"><i class="fa fa-check"></i><b>2.3.1</b> The Hot Dog Case</a></li>
+<li class="chapter" data-level="2.3.2" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#checking-for-multicollinearity"><i class="fa fa-check"></i><b>2.3.2</b> Checking for multicollinearity</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="linear-regression-part-ii.html"><a href="linear-regression-part-ii.html#testing-for-joint-significance"><i class="fa fa-check"></i><b>2.4</b> Testing for joint significance</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistics for Economics with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-regression---part-ii" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Linear Regression - Part II</h1>
+<script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script>
+<script>var element =  $("div[class="book"]");element.classList.remove("with-summary");</script>
+<div id="r-packages-used-in-this-chapter-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> R Packages Used in this Chapter</h2>
+<p>Base R has a great deal of functionality, but the real power of R is that thousands of people developing packages that expand the capabilities of R. In his chapter we will be using the following packages.</p>
+<ul>
+<li><p><code>tidyverse</code> The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures (see <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a>).</p></li>
+<li><p><code>psych</code> A general purpose toolbox for personality, psychometric theory and experimental psychology (see <a href="https://cran.r-project.org/package=psych" class="uri">https://cran.r-project.org/package=psych</a>)</p></li>
+<li><p><code>jtools</code> A collection of tools to more efficiently understand and share the results of regression analyses (see <a href="https://cran.r-project.org/package=jtools" class="uri">https://cran.r-project.org/package=jtools</a>)</p></li>
+<li><p><code>car</code> Functions to accompany J. Fox and S. Weisberg, <em>An R Companion to Applied Regression</em>, Third Edition, Sage, 2019. (see <a href="https://cran.r-project.org/package=car" class="uri">https://cran.r-project.org/package=car</a>)</p></li>
+</ul>
+<p>The following code chunk test weather each package has been installed, installs the package if needed, and then loads the package.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-regression-part-ii.html#cb11-1" aria-hidden="true"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;tidyverse&quot;</span>)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb11-2"><a href="linear-regression-part-ii.html#cb11-2" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb11-3"><a href="linear-regression-part-ii.html#cb11-3" aria-hidden="true"></a></span>
+<span id="cb11-4"><a href="linear-regression-part-ii.html#cb11-4" aria-hidden="true"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;psych&quot;</span>)) <span class="kw">install.packages</span>(<span class="st">&quot;psych&quot;</span>)</span>
+<span id="cb11-5"><a href="linear-regression-part-ii.html#cb11-5" aria-hidden="true"></a><span class="kw">library</span>(psych)</span>
+<span id="cb11-6"><a href="linear-regression-part-ii.html#cb11-6" aria-hidden="true"></a></span>
+<span id="cb11-7"><a href="linear-regression-part-ii.html#cb11-7" aria-hidden="true"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;jtools&quot;</span>)) <span class="kw">install.packages</span>(<span class="st">&quot;jtools&quot;</span>)</span>
+<span id="cb11-8"><a href="linear-regression-part-ii.html#cb11-8" aria-hidden="true"></a><span class="kw">library</span>(jtools)</span>
+<span id="cb11-9"><a href="linear-regression-part-ii.html#cb11-9" aria-hidden="true"></a></span>
+<span id="cb11-10"><a href="linear-regression-part-ii.html#cb11-10" aria-hidden="true"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;car&quot;</span>)) <span class="kw">install.packages</span>(<span class="st">&quot;car&quot;</span>)</span>
+<span id="cb11-11"><a href="linear-regression-part-ii.html#cb11-11" aria-hidden="true"></a><span class="kw">library</span>(car)</span></code></pre></div>
+<p><code>install.packages()</code> command installs the package and the <code>library()</code> command loads the package. For now, you can copy this code and paste this code to use it in your own analysis.</p>
+</div>
+<div id="assumptions-of-the-classical-linear-regression-model-1" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Assumptions of the Classical Linear Regression Model</h2>
+<ol style="list-style-type: decimal">
+<li>The dependent variable is <strong>linearly</strong> related to the coefficients of the model and the model is correctly specified.</li>
+<li>The <strong>mean</strong> of the <strong>error</strong> term is <strong>zero.</strong></li>
+<li>The error term is <strong>normally distributed.</strong> (Not absolutely necessary)</li>
+<li>No perfect <strong>multicollinearity.</strong> No independent variable has a perfect linear relationship with any of the other independent variables.</li>
+<li>The error term has a <strong>constant variance.</strong> No heteroscedasticity.</li>
+<li>The error terms are <strong>uncorrelated</strong> with each other. No autocorrelation or serial correlation.</li>
+<li>The <strong>independent variable(s)</strong> is/are <strong>uncorrelated</strong> with the equation <strong>error term.</strong></li>
+</ol>
+<p>In this chapter, we will focus on the assumptions 4, 5 and 6.</p>
+</div>
+<div id="assumption-4-multicollinearity" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Assumption 4: Multicollinearity</h2>
+<p><em>Multicollinearity</em> is the term used to describe the correlation among the independent variables. Recall that the correlation between variables is a measure of how closely the variables move together. Variables that are positively correlated move in the same direction and variables that are negatively correlated move in opposite directions. Multicollinearity can be a problem when this correlation is high.</p>
+<p>When there is high correlation among the independent variables, it can be difficult to distinguish between the effects of each independent variable on the dependent variable. To understand this, think of the independent variables as strings pulling on the dependent variable. If the the independent variables pull in different directions, i.e. are uncorrelated with each other, then we can see the effect of each independent variable. But if the independent variables pull in the same direction, i.e. are correlated with each other, then the effects of each independent variable becomes muddled.</p>
+<p>Multicollinearity can lead to the following problems:</p>
+<ol style="list-style-type: decimal">
+<li>Independent variables are incorrectly found to be insignificant.</li>
+<li>Coefficients have incorrect signs.</li>
+</ol>
+<p>Perfect multicolinearity occurs when independent variables have a correlation coefficient of 1 or -1. In this case, the perfect collinear variables must be removed to calculate a linear regression.</p>
+<div id="the-hot-dog-case" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> The Hot Dog Case</h3>
+<p>The Dubuque Hot Dog company produces low price hot dogs. Their competition includes Ball Park, the leading brand, and Oscar Mayer. Ball Park produces two types of hot dogs, regular and all-beef, and is planning on reducing the price its hot dogs. The CEO of Debuque would like impact on Dubuque’s market share. Here are the current and new prices.</p>
+<table>
+<caption>Hot Dog Retail Pricing</caption>
+<thead>
+<tr class="header">
+<th align="left">Company</th>
+<th align="left">Product</th>
+<th align="right">Current Price</th>
+<th align="right">New Price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Dubuque</td>
+<td align="left">Regular</td>
+<td align="right">1.49</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">Oscar Mayer</td>
+<td align="left">Regular</td>
+<td align="right">1.69</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">Ball Park</td>
+<td align="left">Regular</td>
+<td align="right">1.79</td>
+<td align="right">1.45</td>
+</tr>
+<tr class="even">
+<td align="left">Ball Park</td>
+<td align="left">All-beef</td>
+<td align="right">1.89</td>
+<td align="right">1.55</td>
+</tr>
+</tbody>
+</table>
+<p>The CEO believes that the impact will be small because Oscar Mayer is Dubuque’s leading competitor, and presents you with the following regression analysis to support his argument.</p>
+<pre><code>## MODEL INFO:
+## Observations: 113
+## Dependent Variable: MKTDUB
+## Type: OLS linear regression 
+## 
+## MODEL FIT:
+## F(4,108) = 29.97881, p = 0.00000
+## R² = 0.52614
+## Adj. R² = 0.50859 
+## 
+## Standard errors: OLS
+## ----------------------------------------------------------------------
+##                         Est.      S.E.     t val.         p        VIF
+## ----------------- ---------- --------- ---------- --------- ----------
+## (Intercept)          0.04046   0.01418    2.85349   0.00518           
+## pdub                -0.00076   0.00008   -9.46040   0.00000    1.34784
+## poscar               0.00026   0.00008    3.12607   0.00228    1.65545
+## pbpreg               0.00039   0.00025    1.57790   0.11751   14.69948
+## pbpbeef              0.00006   0.00021    0.27832   0.78130   13.90586
+## ----------------------------------------------------------------------</code></pre>
+<p>The CEO notes that the Ball Park hot dog prices, <code>pbpreg</code> and <code>pbpbeef</code>, have an insignificant effect on Dubuque’s market share. We are given the data used to estimate the regression.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="linear-regression-part-ii.html#cb13-1" aria-hidden="true"></a>hotdog &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/Hotdog.csv&quot;</span>)</span>
+<span id="cb13-2"><a href="linear-regression-part-ii.html#cb13-2" aria-hidden="true"></a><span class="kw">head</span>(hotdog)</span></code></pre></div>
+<pre><code>##      MKTDUB pdub poscar pbpreg pbpbeef
+## 1 0.0454565  149    169    169     180
+## 2 0.0930145  149    199    189     205
+## 3 0.0596656  189    199    189     205
+## 4 0.0345966  189    199    189     201
+## 5 0.0276536  189    169    159     166
+## 6 0.0294224  189    199    189     196</code></pre>
+<p>Deffinitions of each variables:</p>
+<ul>
+<li>MKTDUB: Dubuque’s market share</li>
+<li>pdub: Dubuque’s hot dog price</li>
+<li>poscar: Oscar Mayer’s hot dog price</li>
+<li>pbpreg: Ball Park’s regular hot dog price</li>
+<li>pbpbeef: Ball Park’s all-beef hot dog price</li>
+</ul>
+</div>
+<div id="checking-for-multicollinearity" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Checking for multicollinearity</h3>
+<p>The variance inflation factor is an indicator of a multicollinearity problem. You can calculate the variance inflation factor by adding <code>vif=T</code> to the <code>summary()</code> command. A VIF greater than 10 may indicate a problem with multicollinearity. This is not my favorite way of checking though.</p>
+<p>A better way is to plot a Paris Panel you can do this the <code>pairs.panels()</code> command from the <code>psych</code> package.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="linear-regression-part-ii.html#cb15-1" aria-hidden="true"></a>psych<span class="op">::</span><span class="kw">pairs.panels</span>(hotdog)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>The Paris Panel plot provides skater plots of each pair of variable in the data frame, a histogram of each variable and th correlation between each pair of variables in the data frame. If the absolute value of the correlation coefficient is over 0.7, you need to watch for Multicollinearity. If the absolute value of the correlation coefficient is over 0.9, you Multicollinearity is a problem, and you should consider dropping one of the variables from your model.</p>
+</div>
+</div>
+<div id="testing-for-joint-significance" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Testing for joint significance</h2>
+<p>We could drop one of the Ball Park Hot dog prices from our regression model as follows. Note that we use <code>summ()</code> from the <code>jtools</code> package to summarize the model.</p>
+<pre><code>## MODEL INFO:
+## Observations: 113
+## Dependent Variable: MKTDUB
+## Type: OLS linear regression 
+## 
+## MODEL FIT:
+## F(3,109) = 40.28690, p = 0.00000
+## R² = 0.52580
+## Adj. R² = 0.51275 
+## 
+## Standard errors: OLS
+## ---------------------------------------------------------------------
+##                         Est.      S.E.     t val.         p       VIF
+## ----------------- ---------- --------- ---------- --------- ---------
+## (Intercept)          0.04007   0.01405    2.85198   0.00520          
+## pdub                -0.00076   0.00008   -9.60418   0.00000   1.32830
+## poscar               0.00026   0.00008    3.13979   0.00218   1.65545
+## pbpreg               0.00046   0.00008    5.88048   0.00000   1.45475
+## ---------------------------------------------------------------------</code></pre>
+<p>In this model, the price of Ball Park regular hot dogs is significant. However, the CEO in unconvinced. He is concerned that leaving price of Ball Park all-beef hot dogs invalidates the model. We explain the problem of multicollinarity, but the CEO remains skeptical.</p>
+<p>In this situation, an F-test of joint significance is the perfect tool. The F-test of joint hypothesis test looks like this</p>
+<p><span class="math display">\[\begin{array}{l}
+{H_0}:{\beta _{pbpreg}} = {\beta _{pbpbeef}} = 0\\
+{H_a}:{\beta _{pbpreg}} \ne 0\; \vee \;{\beta _{pbpbeef}} \ne 0
+\end{array}\]</span></p>
+<p>This F-test asks: Are they jointly significant? The test can be preformed using the <code>linearHypothesis()</code> comand from the <code>car</code> package.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="linear-regression-part-ii.html#cb17-1" aria-hidden="true"></a>car<span class="op">::</span><span class="kw">linearHypothesis</span>(hotdog.lm01, <span class="kw">c</span>(<span class="st">&quot;pbpreg&quot;</span>,<span class="st">&quot;pbpbeef&quot;</span>))</span></code></pre></div>
+<pre><code>## Linear hypothesis test
+## 
+## Hypothesis:
+## pbpreg = 0
+## pbpbeef = 0
+## 
+## Model 1: restricted model
+## Model 2: MKTDUB ~ pdub + poscar + pbpreg + pbpbeef
+## 
+##   Res.Df      RSS Df Sum of Sq      F   Pr(&gt;F)    
+## 1    110 0.014258                                 
+## 2    108 0.010816  2 0.0034416 17.182 3.32e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Since the F-statistic is large (the p-value is small). We reject the null hypothesis and conclude that Ball Park prices are jointly significant.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linear-regression-part-i.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/LJKelly3141/StatisticsForEconomics/edit/master/02_Regression.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/LJKelly3141/StatisticsForEconomics/blob/master/02_Regression.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
